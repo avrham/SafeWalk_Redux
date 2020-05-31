@@ -13,6 +13,7 @@ import TestProcess from './src/pages/TestProcess/TestProcess';
 import RehabPlan from './src/pages/RehabPlan/RehabPlan';
 import Exercise from './src/pages/Exercise/Exercise';
 import TestsArchive from './src/pages/TestsArchive/TestsArchive';
+import Instruction from './src/pages/Instruction/Instruction'
 
 const AppNavigator = createStackNavigator(
   {
@@ -21,7 +22,8 @@ const AppNavigator = createStackNavigator(
     TestProcess: TestProcess,
     RehabPlan: RehabPlan,
     Exercise: Exercise,
-    TestsArchive: TestsArchive
+    TestsArchive: TestsArchive,
+    Instruction:Instruction
   },
   {
     initialRouteName: 'Login',
