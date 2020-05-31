@@ -66,7 +66,6 @@ export class Login extends Component {
             await this.props.authenticate(this.state.email, this.state.password);
             this.props.navigation.navigate('Main')
             this.setState({ visible: false })
-
         }
         catch (err) {
             Alert.alert('Please try again in a few minutes');

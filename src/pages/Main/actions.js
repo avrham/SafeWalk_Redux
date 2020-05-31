@@ -2,11 +2,6 @@ import { CALC_PROGRESS, RESET_ERROR, ERROR} from './action_types';
 
 export const handlecalculateProgress = (rehabProgress,timesOfAllVideo) => ({ type: CALC_PROGRESS, payload: {rehabProgress,timesOfAllVideo}});
 
-export const handleResetError = () => ({ type: RESET_ERROR, payload: '' });
-
-
-export const handleError = errorMessage => ({ type: ERROR, payload: errorMessage});
-
 export const calculateProgress = (rehabPlan) => dispatch => {
 
   const allVideolength = rehabPlan.videos.length;
@@ -23,8 +18,3 @@ export const calculateProgress = (rehabPlan) => dispatch => {
  dispatch(handlecalculateProgress(rehabProgress,timesOfAllVideo));
 };
 
-
-
-export const resetError = () =>  dispatch => {
-  dispatch(handleResetError());
-}
