@@ -18,6 +18,8 @@ import {
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import axios from 'axios';
+import CustomHeader from '../../components/CustomHeader'
+
 
 const mapStateToProps = state => ({
     userToken: state.login.userToken,
@@ -244,6 +246,8 @@ export class TestProcess extends Component {
 
     renderTestProcess() {
         const { visible } = this.state;
+        this.state.errMessage ? alert(this.state.errMessage) : null;
+
         return (
             <LinearGradient colors={['#8A817C', '#F4F3EE']} style={styles.gradient}>
                 <SafeAreaView style={styles.app}>
@@ -334,6 +338,7 @@ export class TestProcess extends Component {
     }
 
     renderTestResults() {
+        this.state.errMessage ? alert(this.state.errMessage) : null;
         return (
             <LinearGradient colors={['#8A817C', '#F4F3EE']} style={styles.gradient}>
 
@@ -393,14 +398,14 @@ export class TestProcess extends Component {
     }
 
     render() {
+      
         if (this.state.shouldRenderTestProcessPage && !this.state.testFinished)
             return this.renderTestProcess();
 
         if (this.state.shouldRenderTestProcessPage && this.state.testFinished)
             return this.renderTestResults();
 
-        if (this.state.errMessage)
-            return Alert.alert(this, state.errMessage);
+        
     }
 }
 

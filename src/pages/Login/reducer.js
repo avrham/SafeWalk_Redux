@@ -11,7 +11,6 @@ export default (state = initialState, action) => {
     
     switch (action.type) {
         case AUTHENTICATE:
-            console.log(action.payload.rehabPlan)
             return {
                 ...state,
                 userToken: action.payload.userToken,

@@ -5,13 +5,15 @@ import { connect } from 'react-redux';
 import { action } from './actions';
 
 const mapStateToProps = state => ({
-    x: state.exercise.x
+    rehabPlan: state.login.rehabPlan,
+
 });
 
 export class Exercise extends Component {
     constructor(props) {
         super(props);
     }
+
 
     render() {
         // this.props.navigation.navigate('Login')
