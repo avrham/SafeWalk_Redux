@@ -5,7 +5,9 @@ import { connect } from 'react-redux';
 import { action } from './actions';
 
 const mapStateToProps = state => ({
-    x: state.rehabPlan.x
+    patienDetailes: state.login.patienDetailes,
+    rehabPlan: state.login.rehabPlan,
+    rehabProgress: state.main.rehabProgress,
 });
 
 export class RehabPlan extends Component {

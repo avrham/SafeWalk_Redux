@@ -4,6 +4,7 @@ import {StyleSheet} from 'react-native';
 import {WebView} from 'react-native-webview';
 import AnimatedLoader from 'react-native-animated-loader';
 import LinearGradient from 'react-native-linear-gradient';
+import CustomHeader from '../../components/CustomHeader'
 
 
 export class Instruction extends Component{
@@ -25,6 +26,7 @@ export class Instruction extends Component{
     return (
       <LinearGradient colors={['#8A817C', '#F4F3EE']} style={styles.gradient}>
       <SafeAreaView style={{flex: 1}}>
+      <CustomHeader navigation={this.props.navigation} />
        
         <View style={{top: 20}}>
           <AnimatedLoader

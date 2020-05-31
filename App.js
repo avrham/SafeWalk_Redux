@@ -14,6 +14,7 @@ import RehabPlan from './src/pages/RehabPlan/RehabPlan';
 import Exercise from './src/pages/Exercise/Exercise';
 import TestsArchive from './src/pages/TestsArchive/TestsArchive';
 import Instruction from './src/pages/Instruction/Instruction'
+import CustomHeader from './src/components/CustomHeader'
 
 const AppNavigator = createStackNavigator(
   {
@@ -23,7 +24,8 @@ const AppNavigator = createStackNavigator(
     RehabPlan: RehabPlan,
     Exercise: Exercise,
     TestsArchive: TestsArchive,
-    Instruction:Instruction
+    Instruction:Instruction,
+    CustomHeader:CustomHeader
   },
   {
     initialRouteName: 'Login',

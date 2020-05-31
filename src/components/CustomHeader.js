@@ -1,17 +1,15 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {Text, View, SafeAreaView, Image, TouchableOpacity} from 'react-native';
 import {StyleSheet} from 'react-native';
 import {IMAGE} from '../constans/Image';
-
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
-import { action } from './actions';
 
 const mapStateToProps = state => ({
-    x: state.main.x
+  patienDetailes: state.login.patienDetailes,
 });
 
 export class CustomHeader extends Component {
@@ -38,7 +36,7 @@ export class CustomHeader extends Component {
         {(isTestScreen || isRehabScreen || !isTestProcess) && (
           <TouchableOpacity
             style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}
-            onPress={() => this.props.navigation.navigate('Test')}>
+            onPress={() => this.props.navigation.navigate('Main')}>
             <Image style={styles.logoIcon} source={IMAGE.ICON_LOGO} />
           </TouchableOpacity>
         )}
@@ -104,7 +102,7 @@ export class CustomHeader extends Component {
             right: wp('3%'),
           }}>
           <Image
-            source={{uri: this.props.store.userDetails.picture}}
+            source={{uri: this.props.patienDetailes.picture}}
             style={styles.sideMenuProfileIcon}
           />
         </View>
@@ -130,5 +128,5 @@ const styles = StyleSheet.create({
 
 export default connect(
     mapStateToProps,
-    { action }
+    {  }
 )(CustomHeader);
