@@ -1,16 +1,29 @@
-import { SOME_ACTION } from './action_types';
+import { CALC_PROGRESS, ERROR, RESET_ERROR } from './action_types';
 
 const initialState = {
-    x: 'bla bla'
+    rehabProgress:0.0,
+    timesOfAllVideo:0,
+    errMessage:''
 };
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case SOME_ACTION:
+        case CALC_PROGRESS:
             return {
                 ...state,
-                x: action.payload
+                rehabProgress: action.payload.rehabProgress,
+                timesOfAllVideo: action.payload.timesOfAllVideo
             };
+            case ERROR:
+                return {
+                    ...state,
+                    errMessage: action.payload,
+                };
+                case RESET_ERROR:
+                return {
+                    ...state,
+                    errMessage: action.payload,
+                };
         default:
             return state;
     }

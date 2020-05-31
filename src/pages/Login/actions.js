@@ -13,16 +13,16 @@ export const handleError = errorMessage => ({ type: ERROR, payload: errorMessage
 
 export const authenticate = (user_name, password) => async dispatch => {
   const m = 'aneeman2010@gmail.com';
-  //const p = 'aaabbb'
+  const p = 'aaabbb'
 
   let options = {
     method: 'post',
     url: `${config.SERVER_URL}/auth/login`,
     data: {
       mail: m,
-      // password: p,
+       password: p,
       //mail: user_name,
-      password: password,
+      //password: password,
     }
   };
 

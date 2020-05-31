@@ -1,17 +1,21 @@
 import React, { Component } from 'react';
-import {  Text,
-  View,
-  SafeAreaView,
-  TouchableOpacity,
-  Dimensions,
-  Image,
-  TextInput,
-  StatusBar,
-  KeyboardAvoidingView,
-  Keyboard,
-  TouchableWithoutFeedback, StyleSheet} from 'react-native';
+import {
+    Text,
+    View,
+    SafeAreaView,
+    TouchableOpacity,
+    Dimensions,
+    Image,
+    TextInput,
+    StatusBar,
+    KeyboardAvoidingView,
+    Keyboard,
+    TouchableWithoutFeedback, StyleSheet,
+    Alert
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {IMAGE} from '../../constans/Image';
+import { IMAGE } from '../../constans/Image';
+import AnimatedLoader from 'react-native-animated-loader';
 
 import { connect } from 'react-redux';
 import { authenticate, resetError } from './actions';
@@ -21,8 +25,8 @@ import {
 } from 'react-native-responsive-screen';
 
 const mapStateToProps = state => ({
-    userToken: state.login.userToken,
-    patienDetailes: state.login.patienDetailes,
+    //userToken: state.login.userToken,
+   // patienDetailes: state.login.patienDetailes,
     errMessage: state.login.errMessage
 });
 
@@ -35,8 +39,12 @@ export class Login extends Component {
         this.state = {
             email: '',
             password: '',
-            visible:false
+            visible: false
         }
+    }
+
+    componentDidMount(){
+        this.props.resetError();
     }
 
 
@@ -53,51 +61,71 @@ export class Login extends Component {
     }
 
     login = async () => {
-        this.setState({ visible: true})
-        try{
+        this.setState({ visible: true })
+        try {
             await this.props.authenticate(this.state.email, this.state.password);
             this.props.navigation.navigate('Main')
-            this.setState({ visible: false})
+            this.setState({ visible: false })
+
         }
-        catch{
-            alert('Error server');
+        catch (err) {
+            Alert.alert('Please try again in a few minutes');
+            this.setState({ visible: false });
         }
     }
 
     render() {
-        this.props.errMessage ? alert(this.props.errMessage) : null;
+      this.props.errMessage ? alert(this.props.errMessage) : null;
+        const { visible } = this.state
         return (
             <View style={styles.app}>
+                <AnimatedLoader
+                    visible={visible}
+                    overlayColor="rgba(255,255,255,0.75)"
+                    source={require('../../constans/loader.json')}
+                    animationStyle={styles.lottie}
+                    speed={2}
+                />
                 <LinearGradient colors={['#8A817C', '#F4F3EE']} style={styles.gradient}>
-                    <View style={styles.infoContainer}>
-                        <TextInput
-                            onChangeText={this.onChangeMail}
-                            clearButtonMode={'always'}
-                            style={styles.input}
-                            placeholder={'Enter Email'}
-                            placeholderTextColor={'rgba(255,255,255,0.8)'}
-                            keyboardType="email-address"
-                            returnKeyType="next"
-                            autoCorrect={true}
-                            value={this.state.email}
-                        />
-                        <TextInput
-                            onChangeText={this.onChangePassword}
-                            clearButtonMode={'always'}
-                            style={styles.input}
-                            placeholder={'Enter Password'}
-                            placeholderTextColor={'rgba(255,255,255,0.8)'}
-                            returnKeyType="go"
-                            secureTextEntry
-                            autoCorrect={false}
-                            value={this.state.password}
-                        />
-                        <TouchableOpacity
-                            style={styles.buttonContainer}
-                            onPress={this.login}>
-                            <Text style={styles.buttonText}>SIGN IN</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <KeyboardAvoidingView behavior="padding">
+                        <TouchableWithoutFeedback
+                            onPress={Keyboard.dismiss}>
+                            <View style={styles.container}>
+                                <View >
+                                    <Image source={IMAGE.ICON_LOGO} style={styles.logo} />
+                                </View>
+                                <View style={styles.infoContainer}>
+                                    <TextInput
+                                        onChangeText={this.onChangeMail}
+                                        clearButtonMode={'always'}
+                                        style={styles.input}
+                                        placeholder={'Enter Email'}
+                                        placeholderTextColor={'rgba(255,255,255,0.8)'}
+                                        keyboardType="email-address"
+                                        returnKeyType="next"
+                                        autoCorrect={true}
+                                        value={this.state.email}
+                                    />
+                                    <TextInput
+                                        onChangeText={this.onChangePassword}
+                                        clearButtonMode={'always'}
+                                        style={styles.input}
+                                        placeholder={'Enter Password'}
+                                        placeholderTextColor={'rgba(255,255,255,0.8)'}
+                                        returnKeyType="go"
+                                        secureTextEntry
+                                        autoCorrect={false}
+                                        value={this.state.password}
+                                    />
+                                    <TouchableOpacity
+                                        style={styles.buttonContainer}
+                                        onPress={this.login}>
+                                        <Text style={styles.buttonText}>SIGN IN</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </KeyboardAvoidingView>
                 </LinearGradient>
             </View >
         );
@@ -105,16 +133,12 @@ export class Login extends Component {
 }
 
 const styles = StyleSheet.create({
-    app_background: {
-        flex: 1
+    app: {
+        flex: 1,
+        flexDirection: 'column',
     },
     gradient: {
         flex: 1
-    },
-    app: {
-        flex: 1,
-        backgroundColor: '#BBBBBB',
-        flexDirection: 'column',
     },
     lottie: {
         width: wp('10%'),
@@ -129,11 +153,10 @@ const styles = StyleSheet.create({
     },
 
     container: {
-        flex: 1,
         alignItems: 'center',
     },
     logo: {
-        top: hp('20%'),
+        top: hp('24%'),
         width: wp('55%'),
         height: hp('10%'),
     },
@@ -141,7 +164,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-        top: hp('30%'),
+        top: hp('35%'),
         padding: 20,
     },
     input: {
