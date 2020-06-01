@@ -1,4 +1,5 @@
 import { AUTHENTICATE,ERROR,RESET_ERROR } from './action_types';
+import {HANDLE_CLICK} from '../Exercise/action_types'
 
 const initialState = {
     userToken: '',
@@ -11,7 +12,6 @@ export default (state = initialState, action) => {
     
     switch (action.type) {
         case AUTHENTICATE:
-            console.log(action.payload.rehabPlan)
             return {
                 ...state,
                 userToken: action.payload.userToken,
@@ -28,6 +28,12 @@ export default (state = initialState, action) => {
                 ...state,
                 errMessage: action.payload,
             };
+            case  HANDLE_CLICK:
+                return {
+                    ...state,
+                    rehabPlan: action.payload,
+                };
+           
         default:
             return state;
     }

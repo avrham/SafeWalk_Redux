@@ -5,17 +5,20 @@ import {WebView} from 'react-native-webview';
 import AnimatedLoader from 'react-native-animated-loader';
 import LinearGradient from 'react-native-linear-gradient';
 import CustomHeader from '../../components/CustomHeader'
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 
 export class Instruction extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      visible: false,
+      visible: true,
     };
   }
   componentDidMount() {
-    this.setState({visible: true});
     setTimeout(() => {
       this.setState({visible: false});
     }, 2000);
@@ -28,7 +31,7 @@ export class Instruction extends Component{
       <SafeAreaView style={{flex: 1}}>
       <CustomHeader navigation={this.props.navigation} />
        
-        <View style={{top: 20}}>
+        <View style={{top: hp('3%')}}>
           <AnimatedLoader
             visible={visible}
             overlayColor="rgba(255,255,255,0.75)"
@@ -47,13 +50,13 @@ export class Instruction extends Component{
             <View style={styles.videoInfo}>
               <View style={{justifyContent: 'center'}}>
                 <Text style={styles.videoTitle}>Instruction video</Text>
-                <Text style={styles.videoTimes}>
+                <Text style={styles.Sentence}>
                  please follow the instruction in this video!
                 </Text>
               </View>
             </View>
-            <View style={{paddingHorizontal: 14, top: 20}}>
-              <Text style={{color: 'black', opacity: 0.8, lineHeight: 20}}>
+            <View style={{paddingHorizontal: wp('4%'), top: hp('3%')}}>
+              <Text style={{color: 'black', opacity: 0.8, lineHeight: hp('2%')}}>
               Please follow the instructions in this video Those will let you know how you should properly locate the sensors on your body!
               </Text>
             </View>
@@ -70,28 +73,28 @@ const styles = StyleSheet.create({
     flex: 1
 },
   lottie: {
-    width: 100,
-    height: 100,
+    width: wp('10%'),
+    height: hp('10%'),
   },
   videoScreen: {
-    width: '100%',
-    height: 270,
+    width: wp('100%'),
+    height:  hp('30%'),
   },
   videoInfo: {
     flexDirection: 'row',
-    top: 16,
+    top:hp('2%'),
     justifyContent: 'space-between',
-    width: Dimensions.get('window').width - 14,
+    width: wp('90%'),
   },
   videoTitle: {
-    paddingLeft: 14,
+    paddingLeft: wp('4%'),
     color: 'black',
     fontWeight: 'bold',
     fontSize: 20,
     marginBottom: 6,
   },
-  videoTimes: {
-    paddingLeft: 14,
+  Sentence: {
+    paddingLeft: wp('4%'),
     color: 'black',
     fontWeight: 'bold',
     fontSize: 14,
