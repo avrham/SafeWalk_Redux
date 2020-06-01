@@ -23,7 +23,8 @@ export const getVideoDetailes = (userToken, rehabPlan) => async dispatch => {
         Videostatus: rehabPlan.videos[i].done,
         times: rehabPlan.videos[i].timesLeft,
         priority:rehabPlan.videos[i].priority,
-        timesLeft:rehabPlan.videos[i].timesLeft
+        timesLeft:rehabPlan.videos[i].timesLeft,
+        priorityNumber:rehabPlan.videos[i].priority === 'High'? 'a' : rehabPlan.videos[i].priority === 'Medium'?'b':'c',
       });
       if (i < length - 1) {
           videoIds=`${videoIds}${temp},`;

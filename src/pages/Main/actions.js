@@ -7,8 +7,7 @@ export const calculateProgress = (rehabPlan) => dispatch => {
   const allVideolength = rehabPlan.videos.length;
   let timesOfVideo = 0;
   let timesLeft = 0;
-  let i, j;
-  for (i = 0, j = 0; i < allVideolength; i++) {
+  for (let i = 0; i < allVideolength; i++) {
     timesOfVideo = timesOfVideo + rehabPlan.videos[i].times;
     timesLeft = timesLeft + rehabPlan.videos[i].timesLeft;
   }
