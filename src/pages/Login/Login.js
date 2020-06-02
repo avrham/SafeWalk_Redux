@@ -25,8 +25,6 @@ import {
 } from 'react-native-responsive-screen';
 
 const mapStateToProps = state => ({
-    //userToken: state.login.userToken,
-   // patienDetailes: state.login.patienDetailes,
     errMessage: state.login.errMessage
 });
 
@@ -68,6 +66,7 @@ export class Login extends Component {
             this.setState({ visible: false })
         }
         catch (err) {
+            console.log(this.props.errMessage)
             Alert.alert('Please try again in a few minutes');
             this.setState({ visible: false });
         }
@@ -163,7 +162,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-        top: hp('35%'),
+        top: hp('33%'),
         padding: 20,
     },
     input: {

@@ -39,7 +39,7 @@ export class Main extends Component {
         return (
             <LinearGradient colors={['#8A817C', '#F4F3EE']} style={styles.gradient}>
                 <SafeAreaView style={styles.app}>
-                <CustomHeader navigation={this.props.navigation} isTestScreen={true} />
+                <CustomHeader navigation={this.props.navigation} headerNormal={true} />
                     <View style={styles.background}>
                         <Text style={styles.title}>
                             Hey {this.props.patienDetailes.name} !
@@ -50,7 +50,7 @@ export class Main extends Component {
                         <TouchableOpacity
                             style={styles.button}
                             onPress={() => this.props.navigation.navigate('TestProcess')}>
-                            <Text style={styles.buttonText}>Start Test</Text>
+                            <Text style={styles.buttonText}>START TEST</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.instructionButton}
@@ -62,7 +62,7 @@ export class Main extends Component {
                                 style={styles.ProgressBarAnimated}
                                 onPress={() => this.props.navigation.navigate('RehabPlan')}>
                                 <Text style={styles.label}>You've completed</Text>
-                                <Progress.Circle size={40} progress={this.props.rehabProgress / 100} borderWidth={1} indeterminate={false} showsText={true} fontSize={50} />
+                                <Progress.Circle size={50} progress={this.props.rehabProgress / 100} borderWidth={1} indeterminate={false} showsText={true} textStyle={{fontSize:18}} />
                                 <Text style={styles.label}>of your rehab program</Text>
                             </TouchableOpacity>
                         )}
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     },
 
     instructionTitle: {
-        fontSize: wp('4.5%'),
+        fontSize: wp('4%'),
         //fontFamily: 'Lato-Regular',
         color: '#F4F3EE',
     },
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         //fontFamily: 'Lato-Regular',
         borderColor: '#8A817C',
-        padding: 10
+        padding: wp('3.5%')
     },
 
 

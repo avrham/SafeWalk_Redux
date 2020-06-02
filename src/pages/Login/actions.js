@@ -3,6 +3,7 @@ import axios from 'axios';
 import config from '../../../config.json'
 
 
+
 export const handleAuthenticate = (userToken, patienDetailes, rehabPlan) => ({ type: AUTHENTICATE, payload: {userToken, patienDetailes, rehabPlan} });
 
 export const handleResetError = () => ({ type: RESET_ERROR, payload: '' });
@@ -12,8 +13,8 @@ export const handleError = errorMessage => ({ type: ERROR, payload: errorMessage
 
 
 export const authenticate = (user_name, password) => async dispatch => {
-  const m = 'aneeman2010@gmail.com';
-  const m2= 'aneeman2020@gmail.com'
+  //const m = 'aneeman2010@gmail.com';
+  const m2= 'aneeman2010@gmail.com'
   const p = 'aaabbb'
 
   let options = {
@@ -50,7 +51,8 @@ export const authenticate = (user_name, password) => async dispatch => {
       dispatch(handleAuthenticate(userToken, patienDetailes.data,rehabPlan.data));
     }
     else{
-      dispatch(handleAuthenticate(userToken, patienDetailes.data,null));
+      dispatch(handleAuthenticate(userToken, patienDetailes.data, null));
+      console.log('test')
     }
   }
   catch (err) {

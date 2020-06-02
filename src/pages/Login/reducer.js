@@ -1,5 +1,5 @@
 import { AUTHENTICATE,ERROR,RESET_ERROR } from './action_types';
-import {HANDLE_CLICK} from '../Exercise/action_types'
+import {MARK_VIDEO_EXECUTION} from '../Exercise/action_types'
 
 const initialState = {
     userToken: '',
@@ -28,10 +28,11 @@ export default (state = initialState, action) => {
                 ...state,
                 errMessage: action.payload,
             };
-            case  HANDLE_CLICK:
+            case MARK_VIDEO_EXECUTION:
+                console.log('avi')
                 return {
                     ...state,
-                    rehabPlan: action.payload,
+                    rehabPlan: action.payload.rehabPlan,
                 };
            
         default:

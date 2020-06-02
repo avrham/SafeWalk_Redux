@@ -21,7 +21,7 @@ export const getVideoDetailes = (userToken, rehabPlan) => async dispatch => {
       videoStatusArray.push({
         id: rehabPlan.videos[i].videoID,
         Videostatus: rehabPlan.videos[i].done,
-        times: rehabPlan.videos[i].timesLeft,
+        times: rehabPlan.videos[i].times,
         priority:rehabPlan.videos[i].priority,
         timesLeft:rehabPlan.videos[i].timesLeft,
         priorityNumber:rehabPlan.videos[i].priority === 'High'? 'a' : rehabPlan.videos[i].priority === 'Medium'?'b':'c',

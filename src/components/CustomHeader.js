@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import {Text, View, SafeAreaView, Image, TouchableOpacity} from 'react-native';
-import {StyleSheet} from 'react-native';
-import {IMAGE} from '../constans/Image';
+import React, { Component } from 'react';
+import { Text, View, SafeAreaView, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { IMAGE } from '../constans/Image';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -13,78 +13,97 @@ const mapStateToProps = state => ({
 });
 
 export class CustomHeader extends Component {
-    constructor(props) {
-        super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
   render() {
     let {
       navigation,
-      isTestScreen,
-      isRehabScreen,
+      headerNormal,
       isTestProcess,
+      testResult,
       videoDetailes,
+      instructionScreen,
+      
     } = this.props;
     return (
-      <SafeAreaView
-        style={{
-          flexDirection: 'row',
-          height: hp('10%'),
-          borderBottomColor: '#463F3A',
-          borderBottomWidth: 1,
-        }}>
-        {(isTestScreen || isRehabScreen || !isTestProcess) && (
-          <TouchableOpacity
-            style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}
-            onPress={() => this.props.navigation.navigate('Main')}>
-            <Image style={styles.logoIcon} source={IMAGE.ICON_LOGO} />
-          </TouchableOpacity>
-        )}
-        <SafeAreaView
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            right: wp('40%'),
-          }}>
-          {(isTestScreen || isRehabScreen) && (
-            <SafeAreaView>
-              <TouchableOpacity onPress={() => navigation.openDrawer()}>
+      <View
+        style={styles.headerContainer}>
+          {headerNormal && (
+            <View  style={styles.rowContainer}>
+              <View style={{ padding: hp('2%'), justifyContent: 'center', textAlign: 'center' }}>
+                <TouchableOpacity onPress={() => navigation.openDrawer()}>
+                  <Image
+                    style={{
+                      width: wp('8%'),
+                      height: hp('10%'),
+                    }}
+                    source={IMAGE.ICON_MENU}
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={{ justifyContent: 'center', textAlign: 'center', left: wp('17%') }}>
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.navigate('TestsArchive')}>
+                  <Image style={styles.logoIcon} source={IMAGE.ICON_LOGO} />
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{ flex:1, justifyContent: 'center', left: wp('32%')
+                }}>
                 <Image
-                  style={{width: 30, height: 30}}
-                  source={IMAGE.ICON_MENU}
-                  resizeMode="contain"
+                  source={{ uri: this.props.patienDetailes.picture }}
+                  style={styles.sideMenuProfileIcon}
                 />
+             </View>
+          </View>
+          )}
+          {instructionScreen &&(
+             <View  style={styles.rowContainer}>
+            <View style={{ padding: hp('1%'), justifyContent: 'center', textAlign: 'center' }}>
+                <TouchableOpacity
+                  onPress={() => navigation.goBack()}
+                  style={{flexDirection: 'row'}}>
+                  <Image
+                    style={{ width: wp('6%'), height: hp('5%') }}
+                    source={IMAGE.ICON_RETURN}
+                    resizeMode="contain"
+                  />
+                  <Text style={{ width: wp('8%'), color: '#463F3A', top:hp('1.5%')}}>Back</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={{ justifyContent: 'center', textAlign: 'center', left: wp('15%') }}>
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.navigate('Main')}>
+                  <Image style={styles.logoIcon} source={IMAGE.ICON_LOGO} />
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{ flex:1, justifyContent: 'center', left: wp('31%')
+                }}>
+                <Image
+                  source={{ uri: this.props.patienDetailes.picture }}
+                  style={styles.sideMenuProfileIcon}
+                />
+              </View>
+         </View>
+
+          )}
+           {isTestProcess && (
+            <View style={{ justifyContent: 'center', textAlign: 'center', left: wp('19%') }}>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('Main')}>
+                <Image style={styles.logoIcon} source={IMAGE.ICON_LOGO} />
               </TouchableOpacity>
-            </SafeAreaView>
+            </View>
           )}
-          {!isRehabScreen && !isTestScreen && !isTestProcess && !videoDetailes && (
-            <TouchableOpacity
-              style={{flexDirection: 'row', alignItems: 'center'}}
-              onPress={() => navigation.goBack()}>
-              <Image
-                style={{width: wp('6%'), height: hp('5%')}}
-                source={IMAGE.ICON_RETURN}
-                resizeMode="contain"
-              />
-              <Text style={{width: wp('10%'), color: '#5D8B91'}}>Back</Text>
-            </TouchableOpacity>
-          )}
-          {videoDetailes && (
-            <TouchableOpacity
-              style={{flexDirection: 'row', alignItems: 'center'}}
-              onPress={() => this.props.navigation.navigate('RehabPlan')}>
-              <Image
-                style={{width: wp('6%'), height: hp('5%')}}
-                source={IMAGE.ICON_RETURN}
-                resizeMode="contain"
-              />
-              <Text style={{width: wp('10%'), color: '#5D8B91'}}>Back</Text>
-            </TouchableOpacity>
-          )}
-          {isTestProcess && (
+          {testResult && (
+            <View style={{ justifyContent: 'center', textAlign: 'center', left: wp('17%') }}>
             <TouchableOpacity
               disabled={true}
-              style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+              style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
               <Image
                 style={{
                   marginLeft: wp('73%'),
@@ -94,39 +113,67 @@ export class CustomHeader extends Component {
                 source={IMAGE.ICON_LOGO}
               />
             </TouchableOpacity>
+            </View>
           )}
-        </SafeAreaView>
-        <View
-          style={{
-            justifyContent: 'center',
-            right: wp('3%'),
-          }}>
-          <Image
-            source={{uri: this.props.patienDetailes.picture}}
-            style={styles.sideMenuProfileIcon}
-          />
+          {videoDetailes && (
+             <View  style={styles.rowContainer}>
+                <View style={{ padding: hp('1%'), justifyContent: 'center', textAlign: 'center' }}>
+                    <TouchableOpacity
+                      onPress={() => this.props.navigation.navigate('RehabPlan')}
+                      style={{flexDirection: 'row'}}>
+                      <Image
+                        style={{ width: wp('6%'), height: hp('5%') }}
+                        source={IMAGE.ICON_RETURN}
+                        resizeMode="contain"
+                      />
+                      <Text style={{ width: wp('8%'), color: '#463F3A', top:hp('1.5%')}}>Back</Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={{ justifyContent: 'center', textAlign: 'center', left: wp('15%') }}>
+                    <TouchableOpacity
+                      onPress={() => this.props.navigation.navigate('Main')}>
+                      <Image style={styles.logoIcon} source={IMAGE.ICON_LOGO} />
+                    </TouchableOpacity>
+                  </View>
+                  <View
+                    style={{ flex:1, justifyContent: 'center', left: wp('31%')
+                    }}>
+                    <Image
+                      source={{ uri: this.props.patienDetailes.picture }}
+                      style={styles.sideMenuProfileIcon}
+                    />
+                  </View>
+            </View>
+          )}
         </View>
-      </SafeAreaView>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  headerContainer:{
+    borderBottomColor: '#463F3A',
+    borderBottomWidth: 1,
+  },
+  rowContainer:{
+      flexDirection: 'row',
+      height: hp('10%'),
+      borderRadius: 5,
+    
+  },
   sideMenuProfileIcon: {
-    alignSelf: 'center',
     height: hp('6%'),
     width: wp('13%'),
     borderWidth: 1,
     borderRadius: 75,
   },
   logoIcon: {
-    marginLeft: wp('33%'),
     width: wp('34%'),
     height: hp('6%'),
   },
 });
 
 export default connect(
-    mapStateToProps,
-    {  }
+  mapStateToProps,
+  {}
 )(CustomHeader);

@@ -6,15 +6,14 @@ import SplashScreen from 'react-native-splash-screen';
 import 'react-native-gesture-handler';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-
 import Login from './src/pages/Login/Login';
 import Main from './src/pages/Main/Main';
 import TestProcess from './src/pages/TestProcess/TestProcess';
 import RehabPlan from './src/pages/RehabPlan/RehabPlan';
 import Exercise from './src/pages/Exercise/Exercise';
 import TestsArchive from './src/pages/TestsArchive/TestsArchive';
-import Instruction from './src/pages/Instruction/Instruction'
-import CustomHeader from './src/components/CustomHeader'
+import Instruction from './src/pages/Instruction/Instruction';
+import CustomHeader from './src/components/CustomHeader';
 
 const AppNavigator = createStackNavigator(
   {
