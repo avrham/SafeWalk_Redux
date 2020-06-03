@@ -6,6 +6,7 @@ import {
     Image,
     StyleSheet,
     Animated,
+    Alert
 } from 'react-native';
 import AnimatedLoader from 'react-native-animated-loader';
 import config from '../../../config.json';
@@ -19,6 +20,7 @@ import {
 } from 'react-native-responsive-screen';
 import axios from 'axios';
 import CustomHeader from '../../components/CustomHeader'
+import {IMAGE} from '../../constans/Image'
 
 
 const mapStateToProps = state => ({
@@ -31,20 +33,17 @@ export class TestProcess extends Component {
         super(props);
         this.state = {
             visible: true,
-            shouldRenderTestProcessPage: true,
+            waiting:true,
+            inProcess:false,
+            result:false,
             shouldStand: true,
             shouldWalk: false,
-            testFinished: false,
             abnormality: false,
-            errMessage: ''
+            errorMessage: ''
         }
     }
 
-    componentDidMount() {
-        this.StartTestHandler();
-    }
-
-    StartTestHandler = async () => {
+    async componentDidMount() {
         let testID, timeout;
         const token = this.props.userToken;
         try {
@@ -52,7 +51,7 @@ export class TestProcess extends Component {
             const test = await this.createTest(token);
             testID = test.id;
             let promise1; // promise2, promise3, promise4, promise5, promise6, promise7;
-            this.setState({ visible: false });
+            this.setState({ visible: false, waiting:false,inProcess:true });
             timeout = setTimeout(() => {
                 this.setState({
                     shouldStand: false,
@@ -84,21 +83,34 @@ export class TestProcess extends Component {
             );
             this.setState({
                 visible: false,
-                testFinished: true,
+                inProcess: false,
+                result:true,
                 abnormality: abnormality,
             });
         } catch (err) {
+            if (testID) 
+            await this.removeTest(token, testID);
             clearTimeout(timeout);
             this.setState({
-                visible: false,
-                shouldRenderTestProcessPage: false,
-                testFinished: true,
                 errorMessage: err.message,
             });
-            // alert(err.message);
-            if (testID) this.removeTest(token, testID);
+            Alert.alert('Alert',this.state.errorMessage, [{text:'Back Home' ,onPress:()=> this.props.navigation.navigate('Main')}])
+            console.log(err.message);           
         }
-    };
+    }
+
+    async removeTest(token, testID) {
+        try {
+          const options = {
+            headers: {'x-auth-token': token},
+          };
+          await axios.delete(`${config.SERVER_URL}/test/${testID}`, options);
+          return;
+        } catch (ex) {
+          return;
+        }
+      }
+
 
     getKitDetails(token) {
         return new Promise(async (resolve, reject) => {
@@ -115,7 +127,6 @@ export class TestProcess extends Component {
                     }`,
                     options,
                 );
-                
                 return resolve(response.data);
             } catch (ex) {
                 console.log(ex)
@@ -147,6 +158,7 @@ export class TestProcess extends Component {
             try {
                 const options = { timeout: 1500 };
                 const response = await axios.get(`http://${ip}`, options);
+                this.setState({ visible: true });
                 try {
                     const stringLength = response.data.length;
                     let output;
@@ -244,13 +256,13 @@ export class TestProcess extends Component {
         });
     }
 
-    renderTestProcess() {
+    renderWaiting() {
         const { visible } = this.state;
-        this.state.errMessage ? alert(this.state.errMessage) : null;
-
+        //this.state.errorMessage ? alert(this.state.errorMessage) : null;
         return (
             <LinearGradient colors={['#8A817C', '#F4F3EE']} style={styles.gradient}>
                 <SafeAreaView style={styles.app}>
+                <CustomHeader navigation={this.props.navigation} isTestProcess={true} />
                     <AnimatedLoader
                         visible={visible}
                         overlayColor="rgba(255,255,255,0.75)"
@@ -259,31 +271,50 @@ export class TestProcess extends Component {
                         speed={2}
                     />
                     <View style={styles.background}>
-                        {this.state.shouldStand && this.state.visible && (
-                            <View>
-                                <Text style={styles.processTitle}>
-                                    Please stand in place for 5 seconds
-                                </Text>
-                                <View style={styles.CircleTimer}>
-                                    <CountdownCircleTimer
-                                        isPlaying={false}
-                                        duration={5}
-                                        colors={[['#004777', 0.33], ['#F7B801', 0.33], ['#A30000']]}>
-                                        {({ remainingTime, animatedColor }) => (
-                                            <Animated.Text
-                                                style={{
-                                                    ...styles.remainingTime,
-                                                    color: animatedColor,
-                                                    fontSize: wp('25%'),
-                                                }}>
-                                                {remainingTime}
-                                            </Animated.Text>
-                                        )}
-                                    </CountdownCircleTimer>
-                                </View>
+                        <View>
+                            <Text style={styles.processTitle}>
+                                Please stand in place for 5 seconds
+                            </Text>
+                            <View style={styles.CircleTimer}>
+                                <CountdownCircleTimer
+                                    isPlaying={false}
+                                    duration={5}
+                                    colors={[['#004777', 0.33], ['#F7B801', 0.33], ['#A30000']]}>
+                                    {({ remainingTime, animatedColor }) => (
+                                    <Animated.Text
+                                        style={{
+                                            ...styles.remainingTime,
+                                            color: animatedColor,
+                                            fontSize: wp('25%'),
+                                        }}>
+                                        {remainingTime}
+                                    </Animated.Text>
+                                    )}
+                                </CountdownCircleTimer>
                             </View>
-                        )}
-                        {this.state.shouldStand && !this.state.visible && (
+                        </View>
+                    </View>
+                </SafeAreaView>
+            </LinearGradient>
+        );
+    }
+
+    renderTestProcess() {
+        const { visible } = this.state;
+        //this.state.errorMessage ? alert(this.state.errorMessage) : null;
+        return (
+            <LinearGradient colors={['#8A817C', '#F4F3EE']} style={styles.gradient}>
+                <SafeAreaView style={styles.app}>
+                <CustomHeader navigation={this.props.navigation} isTestProcess={true} />
+                    <AnimatedLoader
+                        visible={visible}
+                        overlayColor="rgba(255,255,255,0.75)"
+                        source={require('../../constans/loader.json')}
+                        animationStyle={styles.lottie}
+                        speed={2}
+                    />
+                    <View style={styles.background}>
+                        {this.state.shouldStand && (
                             <View>
                                 <Text style={styles.processTitle}>
                                     Please stand in place for 5 seconds
@@ -307,10 +338,10 @@ export class TestProcess extends Component {
                                 </View>
                             </View>
                         )}
-                        {this.state.shouldWalk && !this.state.visible && (
+                        {this.state.shouldWalk && (
                             <View>
                                 <Text style={styles.processTitle}>
-                                    Pleast start walking in a straight line for 15 seconds
+                                    Walk in a straight line for 15 seconds
                                 </Text>
                                 <View style={styles.CircleTimer}>
                                     <CountdownCircleTimer
@@ -338,11 +369,11 @@ export class TestProcess extends Component {
     }
 
     renderTestResults() {
-        this.state.errMessage ? alert(this.state.errMessage) : null;
+        //this.state.errorMessage ? alert(this.state.errorMessage) : null;
         return (
             <LinearGradient colors={['#8A817C', '#F4F3EE']} style={styles.gradient}>
-
                 <SafeAreaView style={styles.app}>
+                <CustomHeader navigation={this.props.navigation} testResult={true} />
                     <View
                         style={{
                             flex: 1,
@@ -358,13 +389,13 @@ export class TestProcess extends Component {
                                         resizeMode="contain"
                                     />
                                     <Text style={styles.message}>
-                                        Walking model might have problem !
+                                    We’ve noticed that you might have some problems with your gait pattern
                                     </Text>
                                     <Text style={styles.message}>
-                                        Your test results were sent to the main lab
+                                    We are currently sending your data to the main lab
                                     </Text>
                                     <Text style={styles.message}>
-                                        Rehabilitation program will be sent as soon as possible
+                                    A rehabilitation program will be sent ASAP
                                     </Text>
                                 </View>
                             </SafeAreaView>
@@ -377,20 +408,22 @@ export class TestProcess extends Component {
                                             resizeMode="contain"
                                         />
                                         <Text style={styles.message}>
-                                            We're happy to let you know that your Walking model is ok and
-                                            not might have problem !
+                                            We're happy to let you know that Your gait pattern was checked and found to be OK
+                                        </Text>
+                                        <Text style={styles.message}>
+                                        Please repeat this test from time to time
                                         </Text>
                                     </View>
                                 </SafeAreaView>
                             )}
-
+                    <View style={styles.ButtonContainer}>
                         <Button
-                            style={styles.BackButton}
-                            onPress={() => this.setState({ shouldRenderTestProcessPage: false })}
-                            title="Back Home"
-                            type="outline"
-                        //containerStyle={{color: 'black'}}
+                            title="BACK HOME"
+                            style={styles.Button}
+                            onPress={() => this.props.navigation.navigate('Main')}
+                            buttonStyle={{ backgroundColor: '#6cd194' }}
                         />
+                    </View>
                     </View>
                 </SafeAreaView>
             </LinearGradient>
@@ -398,12 +431,13 @@ export class TestProcess extends Component {
     }
 
     render() {
-      
-        if (this.state.shouldRenderTestProcessPage && !this.state.testFinished)
+        if (this.state.waiting)
+            return this.renderWaiting();
+        if(this.state.inProcess)
             return this.renderTestProcess();
-
-        if (this.state.shouldRenderTestProcessPage && this.state.testFinished)
+        else
             return this.renderTestResults();
+
 
         
     }
@@ -415,27 +449,34 @@ const styles = StyleSheet.create({
     },
     app: {
         flex: 1,
-        backgroundColor: '#BBBBBB',
     },
     viewAlert: {
-        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
+    processTitle: {
+        color: 'black',
+        fontWeight: 'bold',
+        fontSize: wp('5.5%'),
+        marginBottom: wp('3%'),
+        top: hp('10%'),
+        textAlign: 'center',
+      },
     message: {
         fontSize: wp('6%'),
-        fontFamily: 'ComicNeue-BoldItalic',
+        //fontFamily: 'ComicNeue-BoldItalic',
         justifyContent: 'center',
         textAlign: 'center',
         padding: wp('5%'),
     },
     alertImg: {
-        width: wp('10%'),
+        width: wp('15%'),
         height: hp('10%'),
         marginBottom: hp('7%'),
     },
     SafeAreaAlert: {
-        flex: 1,
+       flex:1,
+       top:hp('10%')
     },
     lottie: {
         width: wp('55%'),
@@ -447,20 +488,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#8A817C'
     },
-    BackButton: {
-        marginBottom: hp('5%'),
-        textAlign: 'center',
-        justifyContent: 'center',
-        borderColor: '#5D8B91',
-        borderRadius: 5,
-        width: wp('63%'),
-        height: hp('6%'),
+    ButtonContainer: {
+        flex:1,
+        top:hp('25%'),
         alignItems: 'center',
     },
-    BackBtnTitle: {
-        fontSize: wp('5.5%'),
-        color: '#5D8B91',
-        backgroundColor: '#5D8B91',
+    Button: {
+        width: 200,
+        backgroundColor: 'black'
     },
 
 });

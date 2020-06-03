@@ -13,7 +13,7 @@ import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import * as Progress from 'react-native-progress';
+import ProgressCircle from 'react-native-progress-circle'
 import CustomHeader from '../../components/CustomHeader'
 
 const mapStateToProps = state => ({
@@ -33,7 +33,13 @@ export class Main extends Component {
 
     async componentDidMount() {
         if (this.props.rehabExsist) {
-            await this.props.calculateProgress(this.props.rehabPlan);
+            try{
+                await this.props.calculateProgress(this.props.rehabPlan);
+            }
+            catch(err){
+                console.log(err.message);
+                Alert.alert('Alert',err.message, [{text:'OK' ,onPress:()=> this.setState({ visible: false })}])
+            }
         }
     }
     render() {
@@ -63,7 +69,14 @@ export class Main extends Component {
                                 style={styles.ProgressBarAnimated}
                                 onPress={() => this.props.navigation.navigate('RehabPlan')}>
                                 <Text style={styles.label}>You've completed</Text>
-                                <Progress.Circle size={50} progress={this.props.rehabProgress / 100} borderWidth={1} indeterminate={false} showsText={true} textStyle={{fontSize:18}} />
+                                <ProgressCircle
+                                    percent={this.props.rehabProgress}
+                                    radius={25}
+                                    borderWidth={4}
+                                    color="#3399FF"
+                                >
+                                <Text style={{ fontSize: 16 }}>{this.props.rehabProgress}%</Text>
+                                </ProgressCircle>
                                 <Text style={styles.label}>of your rehab program</Text>
                             </TouchableOpacity>
                         )}
@@ -156,13 +169,14 @@ const styles = StyleSheet.create({
     label: {
         color: 'black',
         opacity: 0.8,
-        fontSize: wp('3.5%'),
+        fontSize: wp('3%'),
         fontWeight: '500',
         marginBottom: wp('1%'),
         textAlign: 'center',
         //fontFamily: 'Lato-Regular',
         borderColor: '#8A817C',
-        padding: wp('3.5%')
+        padding: wp('3%'),
+        top:hp('0.6%')
     },
 
 
