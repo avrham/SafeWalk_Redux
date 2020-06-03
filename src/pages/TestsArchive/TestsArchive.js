@@ -35,16 +35,14 @@ export class TestsArchive extends Component {
     }
 
     async componentDidMount() {
-
         try {
             this.setState({ visible: true })
             await this.props.getTestArchive(this.props.userToken, this.props.patienDetailes.id);
             this.setState({ visible: false })
         }
-
         catch (err) {
-            alert("Server Error, please try again!")
-        }
+            console.log(err.message);
+            Alert.alert('Alert',err.message, [{text:'OK' ,onPress:()=> this.setState({ visible: false })}])}
 
     }
 

@@ -12,8 +12,9 @@ import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import * as Progress from 'react-native-progress';
 import {IMAGE} from '../../constans/Image'
+import ProgressCircle from 'react-native-progress-circle'
+
 
 const mapStateToProps = state => ({
     MergeArray: state.rehabPlan.MergeArray,
@@ -55,9 +56,7 @@ export class Exercise extends Component {
         }
         catch (err) {
             console.log(err.message);
-
-            Alert.alert(err.message);
-            // this.setState({ visible: false });
+            Alert.alert('Alert',err.message, [{text:'OK' ,onPress:()=> this.setState({ visible: false })}])
         }
     }
 
@@ -114,7 +113,14 @@ export class Exercise extends Component {
                                     <View
                                         style={styles.ProgressBarAnimated}>
                                         <Text style={styles.label}>You've completed</Text>
-                                        <Progress.Circle size={50} progress={this.props.rehabProgress / 100} borderWidth={1} indeterminate={false} showsText={true} textStyle={{ fontSize: 18 }} />
+                                        <ProgressCircle
+                                        percent={this.props.rehabProgress}
+                                        radius={25}
+                                        borderWidth={4}
+                                        color="#3399FF"
+                                        >
+                                        <Text style={{ fontSize: 16 }}>{this.props.rehabProgress}%</Text>
+                                        </ProgressCircle>
                                         <Text style={styles.label}>of your rehab program</Text>
                                     </View>
                                 </View>
@@ -255,13 +261,14 @@ const styles = StyleSheet.create({
     label: {
         color: 'black',
         opacity: 0.8,
-        fontSize: wp('3.5%'),
+        fontSize: wp('3%'),
         fontWeight: '500',
         marginBottom: wp('1%'),
+        textAlign: 'center',
         //fontFamily: 'Lato-Regular',
-        padding: wp('3.5%'),
-        justifyContent: 'center',
-        textAlign: 'center'
+        borderColor: '#8A817C',
+        padding: wp('3%'),
+        top:hp('0.6%')
     },
 });
 

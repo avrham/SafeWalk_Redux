@@ -5,7 +5,6 @@ import mergeByKey from 'array-merge-by-key';
 
 
 export const handleMarkVideoExecution = (newRehabPlan, newProgress, MergeArray,rehabExsist) => {
-  console.log('in handle mark exe')
   return {
     type: MARK_VIDEO_EXECUTION,
     payload: {
@@ -40,7 +39,6 @@ export const markVideoExecution = (userToken, rehabPlanID, videoId) => async dis
       dispatch(handleMarkVideoExecution(rehabPlanAfterClick.data, 100, [], false));
     }
     else{
-      console.log('aaa');
       const videos = rehabPlanAfterClick.data.videos;      
       let totalTimes = 0;
       let totalLeft = 0;

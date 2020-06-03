@@ -14,7 +14,6 @@ export const handleError = errorMessage => ({ type: ERROR, payload: errorMessage
 
 
 export const authenticate = (user_name, password) => async dispatch => {
-  //const m = 'aneeman2010@gmail.com';
   const m2= 'aneeman2010@gmail.com'
   const p = 'aaabbb'
 
@@ -23,7 +22,7 @@ export const authenticate = (user_name, password) => async dispatch => {
     url: `${config.SERVER_URL}/auth/login`,
     data: {
       mail: m2,
-       password: p,
+      password: p,
       //mail: user_name,
       //password: password,
     }
@@ -39,7 +38,6 @@ export const authenticate = (user_name, password) => async dispatch => {
       },
     };
     const patienDetailes = await axios(options);
-    console.log("1")
 
     if (!(patienDetailes.data.rehabPlanID==="")) {
       const rehabPlanId = patienDetailes.data.rehabPlanID;
@@ -53,7 +51,6 @@ export const authenticate = (user_name, password) => async dispatch => {
       dispatch(handleAuthenticate(userToken, patienDetailes.data,rehabPlan.data, true));
     }
     else{
-      console.log("2")
       dispatch(handleAuthenticate(userToken, patienDetailes.data, {}, false));
     }
   }

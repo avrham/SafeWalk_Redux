@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import {
     Text,
     View,
-    SafeAreaView,
     TouchableOpacity,
     Dimensions,
     Image,
     TextInput,
-    StatusBar,
     KeyboardAvoidingView,
     Keyboard,
     TouchableWithoutFeedback, StyleSheet,
@@ -16,7 +14,6 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { IMAGE } from '../../constans/Image';
 import AnimatedLoader from 'react-native-animated-loader';
-
 import { connect } from 'react-redux';
 import { authenticate, resetError,resetRehabFlag } from './actions';
 import {
@@ -69,13 +66,11 @@ export class Login extends Component {
         }
         catch (err) {
             console.log(this.props.errMessage)
-            Alert.alert('Please try again in a few minutes');
-            this.setState({ visible: false });
+            Alert.alert('Alert','error has occured when trying to log in.. check form details', [{text:'OK' ,onPress:()=> this.setState({ visible: false })}])
         }
     }
 
     render() {
-      this.props.errMessage ? alert(this.props.errMessage) : null;
         const { visible } = this.state
         return (
             <View style={styles.app}>

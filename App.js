@@ -34,6 +34,7 @@ const AppNavigator = createStackNavigator(
 
 const Navigation = createAppContainer(AppNavigator);
 
+
 const App = () => {
   useEffect(() => {
     SplashScreen.hide();
