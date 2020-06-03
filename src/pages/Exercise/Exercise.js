@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, SafeAreaView, Dimensions,TouchableOpacity, Alert } from 'react-native';
+import { Text, View, SafeAreaView, Image, Alert } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 import AnimatedLoader from 'react-native-animated-loader';
@@ -13,14 +13,16 @@ import {
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import * as Progress from 'react-native-progress';
+import {IMAGE} from '../../constans/Image'
 
 const mapStateToProps = state => ({
     MergeArray: state.rehabPlan.MergeArray,
     rehabPlan: state.login.rehabPlan,
     userToken: state.login.userToken,
     rehabProgress: state.main.rehabProgress,
-    timesOfAllVideo:state.main.timesOfAllVideo,
-    errMessage:state.exercise.errMessage
+    timesOfAllVideo: state.main.timesOfAllVideo,
+    errMessage: state.exercise.errMessage,
+    rehabExsist: state.login.rehabExsist
 });
 
 export class Exercise extends Component {
@@ -28,39 +30,40 @@ export class Exercise extends Component {
         super(props);
         this.state = {
             visible: true,
-            disable:false
+            disable: false
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         setTimeout(() => {
-            this.setState({visible: false});
-          }, 2000);
-     }
+            this.setState({ visible: false });
+        }, 2000);
+    }
 
-     handleClick = async () => {
+    handleClick = async () => {
         this.setState({ visible: true });
-        const userToken=this.props.userToken;
-        const rehabPlanID=this.props.rehabPlan.id;
+        const userToken = this.props.userToken;
+        const rehabPlanID = this.props.rehabPlan.id;
         const videoId = this.props.navigation.getParam('id');
         try {
-            await this.props.markVideoExecution(userToken,rehabPlanID, videoId);
-            if (this.props.rehabProgress<100) {
-                const item = this.props.MergeArray.filter(element => element.id===this.props.navigation.getParam('id'))[0]
-                item.timesLeft >0 ? null : this.setState({disable :true}) 
+            await this.props.markVideoExecution(userToken, rehabPlanID, videoId);
+            if (this.props.rehabExsist) {
+                const item = this.props.MergeArray.filter(element => element.id === this.props.navigation.getParam('id'))[0]
+                item.timesLeft > 0 ? null : this.setState({ disable: true })
             }
             this.setState({ visible: false });
         }
         catch (err) {
+            console.log(err.message);
+
             Alert.alert(err.message);
-            this.setState({ visible: false });
+            // this.setState({ visible: false });
         }
-     }
+    }
 
 
-     renderInProgress(item) {
+    renderInProgress(item) {
         const { visible } = this.state;
-
         return (
             <LinearGradient colors={['#8A817C', '#F4F3EE']} style={styles.gradient}>
                 <SafeAreaView style={{ flex: 1 }}>
@@ -89,13 +92,13 @@ export class Exercise extends Component {
                             <View style={styles.videoInfo}>
                                 <View style={{ justifyContent: 'center' }}>
                                     <Text style={styles.videoTimes}>
-                                    {`You’ve completed ${item.times - item.timesLeft} out of ${item.times} times of this exercise`}
+                                        {`You’ve completed ${item.times - item.timesLeft} out of ${item.times} times of this exercise`}
                                     </Text>
                                 </View>
                             </View>
                             <View style={{ paddingHorizontal: wp('4%'), top: hp('3%') }}>
                                 <Text style={{ color: 'black', opacity: 0.8, lineHeight: hp('2%') }}>
-                                In order to finish this mission you'll need to follow the instructions inside the exercise movie and press done when you finish
+                                    In order to finish this mission you'll need to follow the instructions inside the exercise movie and press done when you finish
                                 </Text>
                             </View>
                             <View style={styles.ButtonContainer}>
@@ -103,15 +106,15 @@ export class Exercise extends Component {
                                     title="Done"
                                     style={styles.Button}
                                     onPress={this.handleClick}
-                                    disabled = {this.state.disable}
-                                    buttonStyle={{backgroundColor:'#6cd194'}}
+                                    disabled={this.state.disable}
+                                    buttonStyle={{ backgroundColor: '#6cd194' }}
 
                                 />
                                 <View style={{ justifyContent: 'flex-end' }}>
                                     <View
                                         style={styles.ProgressBarAnimated}>
                                         <Text style={styles.label}>You've completed</Text>
-                                        <Progress.Circle size={50} progress={this.props.rehabProgress / 100} borderWidth={1} indeterminate={false} showsText={true} textStyle={{fontSize:18}} />
+                                        <Progress.Circle size={50} progress={this.props.rehabProgress / 100} borderWidth={1} indeterminate={false} showsText={true} textStyle={{ fontSize: 18 }} />
                                         <Text style={styles.label}>of your rehab program</Text>
                                     </View>
                                 </View>
@@ -127,32 +130,38 @@ export class Exercise extends Component {
         return (
             <LinearGradient colors={['#8A817C', '#F4F3EE']} style={styles.gradient}>
                 <SafeAreaView style={{ flex: 1 }}>
-                    <CustomHeader navigation={this.props.navigation} videoDetailes={true} />
+                    <CustomHeader navigation={this.props.navigation} testResult={true} />
                     <View style={styles.background}>
-                        <View>
-                            <View style={{ paddingHorizontal: wp('4%'), top: hp('3%') }}>
-                                <Text style={{ color: 'black', opacity: 0.8, lineHeight: hp('2%') }}>
-                                    You finish this mision!
-                                </Text>
-                            </View>
+                                <View style={styles.viewAlert}>
+                                    <Image
+                                        source={IMAGE.ICON_TESTOK}
+                                        style={styles.alertImg}
+                                        resizeMode="contain"
+                                    />
+                                    <Text style={styles.message}>
+                                        Well done, you finish your rehabilition plan !
+                                    </Text>
+                                    <Text style={styles.message}>
+                                        Wait to call from your lab !
+                                    </Text>
+                                </View>
                             <View style={styles.ButtonContainer}>
                                 <Button
-                                    title="Done"
+                                    title="BACK HOME"
                                     style={styles.Button}
                                     onPress={() => this.props.navigation.navigate('Main')}
-                                    buttonStyle={{backgroundColor:'#6cd194'}}
+                                    buttonStyle={{ backgroundColor: '#6cd194' }}
                                 />
                             </View>
                         </View>
-                    </View>
                 </SafeAreaView>
             </LinearGradient>
         );
     }
 
     render() {
-        if (this.props.rehabProgress<100) {
-            const item = this.props.MergeArray.filter(element => element.id===this.props.navigation.getParam('id'))[0]
+        if (this.props.rehabExsist) {
+            const item = this.props.MergeArray.filter(element => element.id === this.props.navigation.getParam('id'))[0]
             return this.renderInProgress(item)
         }
         else {
@@ -173,6 +182,23 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
     },
+    viewAlert: {
+        top: hp('9%'),
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    message: {
+        fontSize: wp('6%'),
+        //fontFamily: 'ComicNeue-BoldItalic',
+        justifyContent: 'center',
+        textAlign: 'center',
+        padding: wp('5%'),
+    },
+    alertImg: {
+        width: wp('15%'),
+        height: hp('10%'),
+        marginBottom: hp('7%'),
+    },
     descriptionTitleContainer: {
         borderBottomWidth: 1,
         borderBottomColor: '#463F3A',
@@ -186,13 +212,13 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     videoScreen: {
-        marginTop:10,
+        marginTop: 10,
         width: wp('100%'),
-        height:  hp('30%'),
+        height: hp('30%'),
     },
     videoInfo: {
         flexDirection: 'row',
-        top:hp('2%'),
+        top: hp('2%'),
         justifyContent: 'space-between',
         width: wp('90%'),
     },
@@ -212,18 +238,18 @@ const styles = StyleSheet.create({
     },
     ButtonContainer: {
         alignItems: 'center',
-        top:hp('23%')
-      },
-      Button: {
+        top: hp('23%')
+    },
+    Button: {
         width: 200,
-        backgroundColor:'black'
-      },
+        backgroundColor: 'black'
+    },
 
     ProgressBarAnimated: {
-        width:'100%',
-        top:hp('3%'),
+        width: '100%',
+        top: hp('3%'),
         flexDirection: 'row',
-        textAlign:'center',
+        textAlign: 'center',
         justifyContent: 'center',
     },
     label: {
@@ -233,9 +259,9 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         marginBottom: wp('1%'),
         //fontFamily: 'Lato-Regular',
-        padding:wp('3.5%'),
-        justifyContent:'center', 
-        textAlign:'center' 
+        padding: wp('3.5%'),
+        justifyContent: 'center',
+        textAlign: 'center'
     },
 });
 

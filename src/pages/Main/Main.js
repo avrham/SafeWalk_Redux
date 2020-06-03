@@ -19,6 +19,7 @@ import CustomHeader from '../../components/CustomHeader'
 const mapStateToProps = state => ({
     patienDetailes: state.login.patienDetailes,
     rehabPlan: state.login.rehabPlan,
+    rehabExsist:state.login.rehabExsist,
     rehabProgress: state.main.rehabProgress,
 });
 
@@ -31,7 +32,7 @@ export class Main extends Component {
     }
 
     async componentDidMount() {
-        if (this.props.patienDetailes.rehabPlanID) {
+        if (this.props.rehabExsist) {
             await this.props.calculateProgress(this.props.rehabPlan);
         }
     }
@@ -57,7 +58,7 @@ export class Main extends Component {
                             onPress={() => this.props.navigation.navigate('Instruction')}>
                             <Text style={styles.instructionTitle}>INSTRUCTIONS</Text>
                         </TouchableOpacity>
-                        {this.props.patienDetailes.rehabPlanID && (
+                        {this.props.rehabExsist && (
                             <TouchableOpacity
                                 style={styles.ProgressBarAnimated}
                                 onPress={() => this.props.navigation.navigate('RehabPlan')}>

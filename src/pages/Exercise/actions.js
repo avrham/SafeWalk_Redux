@@ -1,28 +1,28 @@
-import { HANDLE_CLICK, RESET_ERROR, ERROR, HANDLE_PROGRESS, NEW_REHAB, MARK_VIDEO_EXECUTION } from './action_types';
+import {  RESET_ERROR, ERROR, MARK_VIDEO_EXECUTION } from './action_types';
 import axios from 'axios';
 import config from '../../../config.json'
 import mergeByKey from 'array-merge-by-key';
 
 
-export const handleMarkVideoExecution = (newRehabPlan, newProgress, MergeArray) => {
+export const handleMarkVideoExecution = (newRehabPlan, newProgress, MergeArray,rehabExsist) => {
   console.log('in handle mark exe')
   return {
     type: MARK_VIDEO_EXECUTION,
     payload: {
-      rehabPlan: newRehabPlan, progress: newProgress, MergeArray:MergeArray
+      rehabPlan: newRehabPlan, 
+      progress: newProgress, 
+      MergeArray:MergeArray,
+      rehabExsist:rehabExsist
     }
   };
 }
 
-//export const handleSetNewRehab = MergeArray => ({ type: HANDLE_CLICK, payload: MergeArray });
-
-////export const handleProgressProcess = letNewProgress => ({ type: HANDLE_PROGRESS, payload: letNewProgress });
-
-//export const handleResetError = () => ({ type: RESET_ERROR, payload: '' });
+export const handleResetError = () => ({ type: RESET_ERROR, payload: '' });
 
 export const handleError = errorMessage => ({ type: ERROR, payload: errorMessage });
 
 export const markVideoExecution = (userToken, rehabPlanID, videoId) => async dispatch => {
+
   let options = {
     method: 'POST',
     url: `${config.SERVER_URL}/rehabPlan/${rehabPlanID}/markVideo`,
@@ -34,17 +34,14 @@ export const markVideoExecution = (userToken, rehabPlanID, videoId) => async dis
       'x-auth-token': userToken,
     }
   };
-  
   try {
-    console.log(options)
     const rehabPlanAfterClick = await axios(options);
-    if (!rehabPlanAfterClick.data){
-      dispatch(handleMarkVideoExecution(rehabPlanAfterClick.data, 100, []));
+    if (Object.keys(rehabPlanAfterClick.data).length == 0){
+      dispatch(handleMarkVideoExecution(rehabPlanAfterClick.data, 100, [], false));
     }
     else{
-      const videos = rehabPlanAfterClick.data.videos;
-      console.log(videos);
-      
+      console.log('aaa');
+      const videos = rehabPlanAfterClick.data.videos;      
       let totalTimes = 0;
       let totalLeft = 0;
       for (let video of videos) {
@@ -86,19 +83,12 @@ export const markVideoExecution = (userToken, rehabPlanID, videoId) => async dis
           VideoDetails.data,
           videoStatusArray,
         );
-        dispatch(handleMarkVideoExecution(rehabPlanAfterClick.data, newProgress, MergeArray));
+        dispatch(handleMarkVideoExecution(rehabPlanAfterClick.data, newProgress, MergeArray, true));
     }
   } catch (err) {
+    console.log(err.message);
     dispatch(handleError(err.message));
   }
-}
-
-export const handleProgress = (oldProgress, timesOfAllVideo) => dispatch => {
-
-  let addNumber = (1 / timesOfAllVideo) * 100
-  letNewProgress = Number(oldProgress + addNumber).toFixed(1)
-  dispatch(handleProgressProcess(letNewProgress));
-
 }
 
 export const resetError = () => dispatch => {

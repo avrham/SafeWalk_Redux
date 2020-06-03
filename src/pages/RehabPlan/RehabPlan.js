@@ -29,6 +29,7 @@ const mapStateToProps = state => ({
     patienDetailes: state.login.patienDetailes,
     rehabPlan: state.login.rehabPlan,
     rehabProgress: state.main.rehabProgress,
+    rehabExsist: state.login.rehabExsist
 });
 
 export class RehabPlan extends Component {
@@ -44,7 +45,7 @@ export class RehabPlan extends Component {
     }
 
     async componentDidMount() {
-        if (this.props.patienDetailes.rehabPlanID) {
+        if (this.props.rehabExsist) {
             try {
                 this.setState({ visible: true });
                 await this.props.getVideoDetailes(this.props.userToken, this.props.rehabPlan);
@@ -55,8 +56,6 @@ export class RehabPlan extends Component {
             }
         }
     }
-
-
     renderItem = ({ item }) => {
         return item.timesLeft != 0 ? (
             <TouchableOpacity
@@ -173,7 +172,7 @@ export class RehabPlan extends Component {
                             </View>
                             <View style={styles.listContainer}>
                                 <FlatList
-                                    data={(this.props.MergeArray.sort((a, b) => a.priorityNumber.localeCompare(b.priorityNumber))).sort(function(a, b){return b.timesLeft-a.timesLeft})}
+                                    data={(this.props.MergeArray.sort((a, b) => a.priorityNumber.localeCompare(b.priorityNumber)))}
                                     renderItem={this.renderItem}
                                 />
                             </View>
@@ -194,7 +193,7 @@ export class RehabPlan extends Component {
     }
 
     render() {
-        if (this.props.patienDetailes.rehabPlanID) {
+        if (this.props.rehabExsist && !(this.props.MergeArray===null)) {
             return this.renderRehabPlan();
         }
         else {

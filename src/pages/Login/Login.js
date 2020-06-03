@@ -18,7 +18,7 @@ import { IMAGE } from '../../constans/Image';
 import AnimatedLoader from 'react-native-animated-loader';
 
 import { connect } from 'react-redux';
-import { authenticate, resetError } from './actions';
+import { authenticate, resetError,resetRehabFlag } from './actions';
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
@@ -43,11 +43,13 @@ export class Login extends Component {
 
     componentDidMount(){
         this.props.resetError();
+        this.props.resetRehabFlag();
     }
 
 
     componentDidUpdate() {
         this.props.resetError();
+
     }
 
     onChangeMail = (email) => {
@@ -195,5 +197,5 @@ const styles = StyleSheet.create({
 
 export default connect(
     mapStateToProps,
-    { authenticate, resetError }
+    { authenticate, resetError,resetRehabFlag }
 )(Login);

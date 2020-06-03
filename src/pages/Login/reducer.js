@@ -1,11 +1,12 @@
-import { AUTHENTICATE,ERROR,RESET_ERROR } from './action_types';
+import { AUTHENTICATE,ERROR,RESET_ERROR,RESET_REHAB_FLAG } from './action_types';
 import {MARK_VIDEO_EXECUTION} from '../Exercise/action_types'
 
 const initialState = {
     userToken: '',
-    patienDetailes:null,
-    rehabPlan:null,
-    errMessage:''
+    patienDetailes:{},
+    rehabPlan:{},
+    errMessage:'',
+    rehabExsist:false
 };
 
 export default (state = initialState, action) => {
@@ -16,7 +17,8 @@ export default (state = initialState, action) => {
                 ...state,
                 userToken: action.payload.userToken,
                 patienDetailes:action.payload.patienDetailes,
-                rehabPlan:action.payload.rehabPlan
+                rehabPlan:action.payload.rehabPlan,
+                rehabExsist:action.payload.rehabExsist
             };
             case ERROR:
             return {
@@ -26,13 +28,18 @@ export default (state = initialState, action) => {
             case RESET_ERROR:
             return {
                 ...state,
-                errMessage: action.payload,
+                errMessage: action.payload.errorMessage,
+            };
+            case RESET_REHAB_FLAG:
+            return {
+                ...state,
+                rehabExsist: action.payload.rehabExsist
             };
             case MARK_VIDEO_EXECUTION:
-                console.log('avi')
                 return {
                     ...state,
                     rehabPlan: action.payload.rehabPlan,
+                    rehabExsist: action.payload.rehabExsist
                 };
            
         default:
