@@ -1,4 +1,5 @@
 import { GET_VIDEO_DETAILES, ERROR, RESET_ERROR } from './action_types';
+import {MARK_VIDEO_EXECUTION } from '../Exercise/action_types'
 
 const initialState = {
     MergeArray: [],
@@ -22,6 +23,11 @@ export default (state = initialState, action) => {
                     ...state,
                     errMessage: action.payload,
                 };
+                case MARK_VIDEO_EXECUTION:
+                    return {
+                        ...state,
+                        MergeArray: action.payload.MergeArray
+                    };
         default:
             return state;
     }

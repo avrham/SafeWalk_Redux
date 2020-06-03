@@ -1,15 +1,20 @@
-import { SOME_ACTION } from './action_types';
+import { ERROR,RESET_ERROR } from './action_types';
 
 const initialState = {
-    x: 'bla bla'
+    errMessage:''
 };
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case SOME_ACTION:
+        case ERROR:
             return {
                 ...state,
-                x: action.payload
+                errMessage: action.payload,
+            };
+            case RESET_ERROR:
+            return {
+                ...state,
+                errMessage: action.payload,
             };
         default:
             return state;

@@ -18,15 +18,13 @@ import { IMAGE } from '../../constans/Image';
 import AnimatedLoader from 'react-native-animated-loader';
 
 import { connect } from 'react-redux';
-import { authenticate, resetError } from './actions';
+import { authenticate, resetError,resetRehabFlag } from './actions';
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
 const mapStateToProps = state => ({
-    //userToken: state.login.userToken,
-   // patienDetailes: state.login.patienDetailes,
     errMessage: state.login.errMessage
 });
 
@@ -45,11 +43,13 @@ export class Login extends Component {
 
     componentDidMount(){
         this.props.resetError();
+        this.props.resetRehabFlag();
     }
 
 
     componentDidUpdate() {
         this.props.resetError();
+
     }
 
     onChangeMail = (email) => {
@@ -68,6 +68,7 @@ export class Login extends Component {
             this.setState({ visible: false })
         }
         catch (err) {
+            console.log(this.props.errMessage)
             Alert.alert('Please try again in a few minutes');
             this.setState({ visible: false });
         }
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-        top: hp('35%'),
+        top: hp('33%'),
         padding: 20,
     },
     input: {
@@ -196,5 +197,5 @@ const styles = StyleSheet.create({
 
 export default connect(
     mapStateToProps,
-    { authenticate, resetError }
+    { authenticate, resetError,resetRehabFlag }
 )(Login);

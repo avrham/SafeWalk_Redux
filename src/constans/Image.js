@@ -6,10 +6,10 @@ const IMAGE = {
     ICON_RP_PRESS: require('../../assets/images/rpPress.png'),
     ICON_LOGO: require('../../assets/images/logo.png'),
     ICON_LOGOUT: require('../../assets/images/logout.png'),
-    ICONE_DONE: require('../../assets/images/Done.png'),
+    ICONE_DONE: require('../../assets/images/OK.png'),
     ICONE_NOT_DONE: require('../../assets/images/NotDone.png'),
     ICOM_ALERT: require('../../assets/images/alert.png'),
-    ICON_TESTOK: require('../../assets/images/testOk.png'),
+    ICON_TESTOK: require('../../assets/images/OK.png'),
     BACKGRUND: require('../../assets/images/backgrund.jpeg'),
   };
   
