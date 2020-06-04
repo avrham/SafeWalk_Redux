@@ -45,11 +45,11 @@ export class Exercise extends Component {
         this.setState({ visible: true });
         const userToken = this.props.userToken;
         const rehabPlanID = this.props.rehabPlan.id;
-        const videoId = this.props.navigation.getParam('id');
+        const videoId =this.props.route.params.id;
         try {
             await this.props.markVideoExecution(userToken, rehabPlanID, videoId);
             if (this.props.rehabExsist) {
-                const item = this.props.MergeArray.filter(element => element.id === this.props.navigation.getParam('id'))[0]
+                const item = this.props.MergeArray.filter(element => element.id === this.props.route.params.id)[0]
                 item.timesLeft > 0 ? null : this.setState({ disable: true })
             }
             this.setState({ visible: false });
@@ -167,7 +167,7 @@ export class Exercise extends Component {
 
     render() {
         if (this.props.rehabExsist) {
-            const item = this.props.MergeArray.filter(element => element.id === this.props.navigation.getParam('id'))[0]
+            const item = this.props.MergeArray.filter(element => element.id === this.props.route.params.id)[0]
             return this.renderInProgress(item)
         }
         else {

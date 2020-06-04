@@ -30,7 +30,6 @@ export class Instruction extends Component {
       <LinearGradient colors={['#8A817C', '#F4F3EE']} style={styles.gradient}>
         <SafeAreaView style={{ flex: 1 }}>
           <CustomHeader navigation={this.props.navigation} instructionScreen={true} />
-
             <AnimatedLoader
               visible={visible}
               overlayColor="rgba(255,255,255,0.75)"
