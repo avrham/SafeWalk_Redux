@@ -115,11 +115,11 @@ export class Exercise extends Component {
                                         <Text style={styles.label}>You've completed</Text>
                                         <ProgressCircle
                                         percent={this.props.rehabProgress}
-                                        radius={25}
+                                        radius={27}
                                         borderWidth={4}
                                         color="#3399FF"
                                         >
-                                        <Text style={{ fontSize: 16 }}>{this.props.rehabProgress}%</Text>
+                                        <Text style={{ fontSize: 14 }}>{this.props.rehabProgress}%</Text>
                                         </ProgressCircle>
                                         <Text style={styles.label}>of your rehab program</Text>
                                     </View>

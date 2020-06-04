@@ -6,6 +6,7 @@ import {
     FlatList,
     Image,
     StyleSheet,
+    Alert
 } from 'react-native';
 import CustomHeader from '../../components/CustomHeader'
 import { IMAGE } from '../../constans/Image';

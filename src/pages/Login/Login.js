@@ -94,8 +94,8 @@ export class Login extends Component {
                                         onChangeText={this.onChangeMail}
                                         clearButtonMode={'always'}
                                         style={styles.input}
-                                        placeholder={'Enter Email'}
-                                        placeholderTextColor={'rgba(255,255,255,0.8)'}
+                                        placeholder={'Email'}
+                                        placeholderTextColor={'#463F3A'}
                                         keyboardType="email-address"
                                         returnKeyType="next"
                                         autoCorrect={true}
@@ -105,8 +105,8 @@ export class Login extends Component {
                                         onChangeText={this.onChangePassword}
                                         clearButtonMode={'always'}
                                         style={styles.input}
-                                        placeholder={'Enter Password'}
-                                        placeholderTextColor={'rgba(255,255,255,0.8)'}
+                                        placeholder={'Password'}
+                                        placeholderTextColor={'#463F3A'}
                                         returnKeyType="go"
                                         secureTextEntry
                                         autoCorrect={false}

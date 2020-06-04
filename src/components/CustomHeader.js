@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, SafeAreaView, Image, TouchableOpacity } from 'react-native';
+import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { IMAGE } from '../constans/Image';
 import {
@@ -46,7 +46,7 @@ export class CustomHeader extends Component {
             </View>
             <View style={{ justifyContent: 'center', textAlign: 'center', left: wp('17%') }}>
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('TestsArchive')}>
+                onPress={() => this.props.navigation.navigate('Main')}>
                 <Image style={styles.logoIcon} source={IMAGE.ICON_LOGO} />
               </TouchableOpacity>
             </View>
