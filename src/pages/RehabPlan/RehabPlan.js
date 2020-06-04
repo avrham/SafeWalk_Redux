@@ -111,7 +111,7 @@ export class RehabPlan extends Component {
         return (
             <LinearGradient colors={['#8A817C', '#F4F3EE']} style={styles.gradient}>
                 <SafeAreaView style={styles.app}>
-                    <CustomHeader isRehabScreen={true} navigation={this.props.navigation} />
+                <CustomHeader headerNormal={true} navigation={this.props.navigation} />
                     <View style={styles.background}>
                         <SafeAreaView>
                             <View style={styles.viewAlert}>

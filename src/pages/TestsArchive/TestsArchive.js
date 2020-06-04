@@ -29,14 +29,13 @@ export class TestsArchive extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            visible: false,
+            visible: true,
             testsArray: []
         }
     }
 
     async componentDidMount() {
         try {
-            this.setState({ visible: true })
             await this.props.getTestArchive(this.props.userToken, this.props.patienDetailes.id);
             this.setState({ visible: false })
         }
@@ -145,10 +144,10 @@ export class TestsArchive extends Component {
             return alert(this.props.errMessage)
         }
         else{
-            if (!(this.props.getAllTests.length===0)) {
+            if (!(this.props.getAllTests.length===0 && !this.state.visible)) {
                 return this.renderTests();
             }
-            else {
+            if (this.props.getAllTests.length===0 && !this.state.visible){
                 return this.renderMessage();
             }
         }

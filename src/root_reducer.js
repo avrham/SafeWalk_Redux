@@ -12,5 +12,6 @@ export default combineReducers({
     testProcess: test_process_reducer,
     rehabPlan: rehab_plan_reducer,
     exercise: exercise_reducer,
-    testsArchive: tests_archive_reducer
+    testsArchive: tests_archive_reducer,
+    
 });

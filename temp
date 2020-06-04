@@ -1,13 +1,13 @@
 import React, { useEffect, Fragment } from 'react';
-import { StatusBar } from 'react-native';
+import { StatusBar, Image, StyleSheet} from 'react-native';
+import {Container, content, Header, body, Icon} from 'native-base'
 import store from './src/store';
 import { Provider } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import 'react-native-gesture-handler';
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { NavigationContainer } from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import Login from './src/pages/Login/Login';
 import Main from './src/pages/Main/Main';
 import TestProcess from './src/pages/TestProcess/TestProcess';
@@ -18,19 +18,22 @@ import Instruction from './src/pages/Instruction/Instruction';
 import CustomHeader from './src/components/CustomHeader';
 import CustomDrawerContent from './src/components/CustomDrawerContent';
 
-
 const navOptionHandler = () => ({
   headerShown: false,
 });
 
 const StackTest = createStackNavigator();
 
-function TestStack() {
-  return (
-    <StackTest.Navigator initialRouteName="Main">
+const TestStack = ({navigation})=> (
+  <StackTest.Navigator initialRouteName="Main">
       <StackTest.Screen
         name="Main"
         component={Main}
+        options={navOptionHandler}
+      />
+       <StackTest.Screen
+        name="TestProcess"
+        component={TestProcess}
         options={navOptionHandler}
       />
       <StackTest.Screen
@@ -38,20 +41,14 @@ function TestStack() {
         component={Instruction}
         options={navOptionHandler}
       />
-      <StackTest.Screen
-        name="TestProcess"
-        component={TestProcess}
-        options={navOptionHandler}
-      />
     </StackTest.Navigator>
-  );
-}
+) 
+    
 
 const StackRehabPlan = createStackNavigator();
 
-function RehabPlanStack() {
-  return (
-    <StackRehabPlan.Navigator initialRouteName="RehabPlan">
+const RehabPlanStack = ({navigation})=> (
+    <StackRehabPlan.Navigator initialRouteName = "RehabPlan" >
       <StackRehabPlan.Screen
         name="RehabPlan"
         component={RehabPlan}
@@ -64,49 +61,82 @@ function RehabPlanStack() {
       />
     </StackRehabPlan.Navigator>
   );
-}
 
-const Drawer = createDrawerNavigator();
+const StackTestsArchive = createStackNavigator();
 
-function DrawerNavigator({navigation}) {
-  return (
-    <Drawer.Navigator
-      initialRouteName="Main"
-      drawerContent={() => <CustomDrawerContent navigation={navigation} />}>
-      <Drawer.Screen name="Main" component={TestStack} />
-      <Drawer.Screen name="RehabPlan" component={RehabPlanStack} />
-      <Drawer.Screen name="TestsArchive" component={TestsArchive} />
-    </Drawer.Navigator>
+const TestsArchiveStack = ({navigation})=> (
+    <StackTestsArchive.Navigator initialRouteName="TestsArchive">
+      <StackTestsArchive.Screen
+        name="TestsArchive"
+        component={TestsArchive}
+        options={navOptionHandler}
+      />
+    </StackTestsArchive.Navigator>
   );
-}
 
-const StackApp = createStackNavigator();
+// const AppNavigator = createStackNavigator(
+//   {
+//     Login: Login,
+//     Main: Main,
+//     TestProcess: TestProcess,
+//     RehabPlan: RehabPlan,
+//     Exercise: Exercise,
+//     TestsArchive: TestsArchive,
+//     Instruction:Instruction,
+//   },
+//   {
+//     initialRouteName: 'Login',
+//     headerMode: 'none'
+//   }
+// );
 
-const App = () => {
+//const Navigation = createAppContainer(AppNavigator);
+
+
+// function DrawerNavigator({navigation}) {
+//   return (
+//     <Drawer.Navigator
+//       initialRouteName="Main"
+//       drawerContent={() => <CustomDrawerContent navigation={navigation} />}>
+//       <Drawer.Screen name="Main" component={TestStack} />
+//       <Drawer.Screen name="RehabPlan" component={RehabPlanStack} />
+//       <Drawer.Screen name="TestsArchive" component={TestsArchiveStack} />
+//     </Drawer.Navigator>
+//   );
+// }
+
+// const StackApp = createStackNavigator();
+
+
+ const Drawer = createDrawerNavigator();
+
+
+ const App = (navigation) => {
   useEffect(() => {
     SplashScreen.hide();
   }, []);
   return (
     <Provider store={store}>
       <Fragment >
-        <StatusBar barStyle="light-content" />
+        <StatusBar barStyle="light-content"/>
         <NavigationContainer>
-        <StackApp.Navigator initialRouteName="Login">
-          <StackApp.Screen
-            name="Main"
-            component={DrawerNavigator}
-            options={navOptionHandler}
-          />
-          <StackApp.Screen
-            name="Login"
-            component={Login}
-            options={navOptionHandler}
-          />
-        </StackApp.Navigator>
-      </NavigationContainer>
+          <Drawer.Navigator initialRouteName="Login" drawerContent={() => <CustomDrawerContent navigation={navigation} />}>
+            <Drawer.Screen name="Main" component={TestStack} />
+            <Drawer.Screen name="RehabPlan" component={RehabPlanStack} />
+            <Drawer.Screen name="TestsArchive" component={TestsArchiveStack} />
+            <Drawer.Screen name="Login" component={Login} />
+          </Drawer.Navigator>
+        </NavigationContainer>
       </Fragment>
     </Provider>
   );
 };
 
-export default App;
+const styles = StyleSheet.create({
+  drawerImage:{
+    height:100,
+    width:100,
+    borderRadius:75
+  }
+
+})

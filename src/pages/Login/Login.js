@@ -61,7 +61,7 @@ export class Login extends Component {
         this.setState({ visible: true })
         try {
             await this.props.authenticate(this.state.email, this.state.password);
-            this.props.navigation.navigate('Main')
+            this.props.navigation.navigate('HomeApp')
             this.setState({ visible: false })
         }
         catch (err) {
@@ -139,14 +139,6 @@ const styles = StyleSheet.create({
         width: wp('10%'),
         height: hp('10%'),
     },
-    loader: {
-        position: 'absolute',
-        top: Dimensions.get('window').height * 0.565,
-        width: 50,
-        height: 50,
-        opacity: 0.5,
-    },
-
     container: {
         alignItems: 'center',
     },
