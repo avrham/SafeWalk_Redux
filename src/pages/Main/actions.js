@@ -5,14 +5,15 @@ export const handlecalculateProgress = (rehabProgress,timesOfAllVideo) => ({ typ
 export const calculateProgress = (rehabPlan) => dispatch => {
 
   const allVideolength = rehabPlan.videos.length;
-  let timesOfAllVideo = 0;
-  let timesLeft = 0;
-  for (let i = 0; i < allVideolength; i++) {
-    timesOfAllVideo = timesOfAllVideo + rehabPlan.videos[i].times;
-    timesLeft = timesLeft + rehabPlan.videos[i].timesLeft;
-  }
-  const rehabProgress = Math.floor(Math.floor(((timesOfAllVideo - timesLeft) / timesOfAllVideo)* 100));
+  let totalTimes = 0;
+      let totalLeft = 0;
+      for (let video of videos) {
+        totalTimes += video.times;
+      totalLeft += video.timesLeft;
+      }
+      
+  const rehabProgress = Number((1 - (totalLeft / totalTimes))*100).toFixed(0);
 
- dispatch(handlecalculateProgress(rehabProgress,timesOfAllVideo));
+ dispatch(handlecalculateProgress(rehabProgress,totalTimes));
 };
 
