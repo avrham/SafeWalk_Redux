@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         //fontFamily: 'Lato-Regular',
         borderColor: '#8A817C',
-        padding: wp('3%'),
+        padding: wp('2%'),
         top:hp('0.6%')
     },
 });

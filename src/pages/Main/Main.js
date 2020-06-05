@@ -34,7 +34,6 @@ export class Main extends Component {
 
     async componentDidMount() {
         console.log(this.props.rehabPlan);
-        
         if (this.props.rehabExsist) {
             try{
                 await this.props.calculateProgress(this.props.rehabPlan);
@@ -160,14 +159,15 @@ const styles = StyleSheet.create({
         color: '#F4F3EE',
     },
     ProgressBarAnimated: {
-        marginTop: hp('35%'),
+        marginTop: hp('39%'),
         borderColor: 'black',
         borderWidth: 2,
         borderColor: '#8A817C',
         padding: 5,
         borderRadius: 5,
         flexDirection: 'row',
-    },
+        textAlign:'center',
+        justifyContent: 'center',    },
 
     label: {
         color: 'black',

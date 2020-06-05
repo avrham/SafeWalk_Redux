@@ -44,9 +44,8 @@ export const markVideoExecution = (userToken, rehabPlanID, videoId) => async dis
       let totalLeft = 0;
       for (let video of videos) {
         totalTimes += video.times;
-      totalLeft += video.timesLeft;
+        totalLeft += video.timesLeft;
       }
-      
       const newProgress = Number((1 - (totalLeft / totalTimes))*100).toFixed(0);
       let videoStatusArray=[];
       let videoIds='';
