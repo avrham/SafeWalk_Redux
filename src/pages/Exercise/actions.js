@@ -84,8 +84,8 @@ export const markVideoExecution = (userToken, rehabPlanID, videoId) => async dis
         dispatch(handleMarkVideoExecution(rehabPlanAfterClick.data, newProgress, MergeArray, true));
     }
   } catch (err) {
-    console.log(err.message);
-    dispatch(handleError(err.message));
+    console.log(err.response.data.message);
+    dispatch(handleError(err.response.data.message));
   }
 }
 

@@ -49,7 +49,7 @@ export const getVideoDetailes = (userToken, rehabPlan) => async dispatch => {
       );
       dispatch(handlegetVideoDetailes(MergeArray));
     } catch (err) {
-      dispatch(handleError(err.message));
+      dispatch(handleError(err.response.data.message));
     }
     
   }

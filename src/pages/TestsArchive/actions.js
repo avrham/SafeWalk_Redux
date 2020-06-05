@@ -28,7 +28,7 @@ export const getTestArchive = (userToken,patienId) => async dispatch => {
     dispatch(handlegetAllTests(getAllTests.data));
   }
   catch(err){
-    console.log(err.message)
+    console.log(err.response.data.message)
     dispatch(handleError('Server Error, please try again'));
   }
 }

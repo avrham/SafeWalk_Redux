@@ -94,7 +94,7 @@ export class TestProcess extends Component {
             this.setState({
                 errorMessage: err.message,
             });
-            Alert.alert('Alert',this.state.errorMessage, [{text:'Back Home' ,onPress:()=> this.props.navigation.navigate('Main')}])
+            Alert.alert('Alert',err.message, [{text:'Cancel' ,onPress:() => this.props.navigation.navigate('Main')}])
             console.log(err.message);           
         }
     }
@@ -421,7 +421,7 @@ export class TestProcess extends Component {
                             title="BACK HOME"
                             style={styles.Button}
                             onPress={() => this.props.navigation.navigate('Main')}
-                            buttonStyle={{ backgroundColor: '#6cd194' }}
+                            buttonStyle={{ backgroundColor: '#8A817C' }}
                         />
                     </View>
                     </View>
