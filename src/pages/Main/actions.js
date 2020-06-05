@@ -9,7 +9,7 @@ export const calculateProgress = (rehabPlan) => dispatch => {
   let totalLeft = 0;
   for (let video of videos) {
     totalTimes += video.times;
-  totalLeft += video.timesLeft;
+    totalLeft += video.timesLeft;
   }
   const rehabProgress = Number((1 - (totalLeft / totalTimes))*100).toFixed(0);
 

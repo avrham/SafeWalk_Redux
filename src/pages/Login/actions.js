@@ -21,10 +21,10 @@ export const authenticate = (user_name, password) => async dispatch => {
     method: 'post',
     url: `${config.SERVER_URL}/auth/login`,
     data: {
-      mail: m2,
-      password: p,
-      //mail: user_name,
-      //password: password,
+      //mail: m2,
+      //password: p,
+      mail: user_name,
+      password: password,
     }
   };
   try {
@@ -38,7 +38,6 @@ export const authenticate = (user_name, password) => async dispatch => {
       },
     };
     const patienDetailes = await axios(options);
-
     if (!(patienDetailes.data.rehabPlanID==="")) {
       const rehabPlanId = patienDetailes.data.rehabPlanID;
       options = {
@@ -55,8 +54,8 @@ export const authenticate = (user_name, password) => async dispatch => {
     }
   }
   catch (err) {
-    dispatch(handleError(err.message));
-    throw new CustomError('Error server');
+    dispatch(handleError(err.response.data.message));
+    throw new Error(err.response.data.message)
   }
 }
 

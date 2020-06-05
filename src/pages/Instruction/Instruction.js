@@ -55,13 +55,13 @@ export class Instruction extends Component {
               <View style={styles.videoInfo}>
                 <View style={{ justifyContent: 'center' }}>
                   <Text style={styles.Sentence}>
-                    please follow the instruction in this video !
+                    Please follow the instructions in this video !
                 </Text>
                 </View>
               </View>
               <View style={{ paddingHorizontal: wp('4%'), top: hp('3%') }}>
                 <Text style={{ color: 'black', opacity: 0.8, lineHeight: hp('2%') }}>
-                  Please follow the instructions in this video, Those will let you know how you should properly locate the sensors on your body
+                  Those will let you know how you should properly locate the sensors on your body
               </Text>
               </View>
             </View>

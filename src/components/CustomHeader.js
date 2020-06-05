@@ -145,10 +145,9 @@ export class CustomHeader extends Component {
               </TouchableOpacity>
             </View>
             <View style={{ justifyContent: 'center', textAlign: 'center', left: wp('15%') }}>
-              <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('Main')}>
+              <View>
                 <Image style={styles.logoIcon} source={IMAGE.ICON_LOGO} />
-              </TouchableOpacity>
+              </View>
             </View>
             <View
               style={{

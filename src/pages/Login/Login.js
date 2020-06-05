@@ -65,8 +65,8 @@ export class Login extends Component {
             this.setState({ visible: false })
         }
         catch (err) {
-            console.log(this.props.errMessage)
-            Alert.alert('Alert','error has occured when trying to log in.. check form details', [{text:'OK' ,onPress:()=> this.setState({ visible: false })}])
+            //console.log(err.message)
+            Alert.alert('Alert',err.message, [{text:'OK' ,onPress:()=> this.setState({ visible: false })}])
         }
     }
 

@@ -145,10 +145,7 @@ export class Exercise extends Component {
                                         resizeMode="contain"
                                     />
                                     <Text style={styles.message}>
-                                        Well done, you finish your rehabilition plan !
-                                    </Text>
-                                    <Text style={styles.message}>
-                                        Wait to call from your lab !
+                                        Well done, you have finished your rehabilition program !
                                     </Text>
                                 </View>
                             <View style={styles.ButtonContainer}>
@@ -156,7 +153,7 @@ export class Exercise extends Component {
                                     title="BACK HOME"
                                     style={styles.Button}
                                     onPress={() => this.props.navigation.navigate('Main')}
-                                    buttonStyle={{ backgroundColor: '#6cd194' }}
+                                    buttonStyle={{ backgroundColor: '#8A817C' }}
                                 />
                             </View>
                         </View>

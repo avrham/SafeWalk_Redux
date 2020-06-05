@@ -2,7 +2,7 @@ import { CALC_PROGRESS } from './action_types';
 import {MARK_VIDEO_EXECUTION} from '../Exercise/action_types'
 
 const initialState = {
-    rehabProgress:0.0,
+    rehabProgress:0,
     timesOfAllVideo:0,
 };
 
