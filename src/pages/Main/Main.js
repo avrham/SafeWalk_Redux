@@ -33,6 +33,8 @@ export class Main extends Component {
     }
 
     async componentDidMount() {
+        console.log(this.props.rehabPlan);
+        
         if (this.props.rehabExsist) {
             try{
                 await this.props.calculateProgress(this.props.rehabPlan);
