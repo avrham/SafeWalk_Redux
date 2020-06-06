@@ -83,10 +83,9 @@ export class Login extends Component {
                 />
                 <LinearGradient colors={['#8A817C', '#F4F3EE']} style={styles.gradient}>
                     <KeyboardAvoidingView behavior="padding">
-                        <TouchableWithoutFeedback
-                            onPress={Keyboard.dismiss}>
+                        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                             <View style={styles.container}>
-                                <View >
+                                <View>
                                     <Image source={IMAGE.ICON_LOGO} style={styles.logo} />
                                 </View>
                                 <View style={styles.infoContainer}>

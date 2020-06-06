@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     },
     ButtonContainer: {
         alignItems: 'center',
-        top: hp('23%')
+        top: hp('20%')
     },
     Button: {
         width: 200,
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
 
     ProgressBarAnimated: {
         width: '100%',
-        top: hp('3%'),
+        top: hp('5%'),
         flexDirection: 'row',
         textAlign: 'center',
         justifyContent: 'center',
