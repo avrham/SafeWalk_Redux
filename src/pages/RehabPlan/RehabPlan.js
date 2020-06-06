@@ -227,12 +227,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     viewAlert: {
-        flex: 1,
+        top: hp('18%'),
         justifyContent: 'center',
         alignItems: 'center',
     },
     alertImg: {
-        width: wp('20%'),
+        width: wp('15%'),
         height: hp('10%'),
         marginBottom: hp('8%'),
     },
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
         //fontFamily: 'ComicNeue-BoldItalic',
         justifyContent: 'center',
         textAlign: 'center',
-        padding: hp('4%'),
+        padding: hp('2%'),
     },
     descriptionTitleContainer:{
         borderBottomWidth:1,

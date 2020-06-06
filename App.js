@@ -89,7 +89,7 @@ function DrawerNavigator({navigation}) {
       drawerContent= {props => <CustomDrawerContent {...props}/>}>
       <Drawer.Screen name="Main" component={TestStack} />
       <Drawer.Screen name="RehabPlan" component={RehabPlanStack} />
-      <Drawer.Screen name="TestsArchive" component={TestsArchiveStack} />
+      <Drawer.Screen name="Tests archive" component={TestsArchiveStack} />
     </Drawer.Navigator>
   );
 }
