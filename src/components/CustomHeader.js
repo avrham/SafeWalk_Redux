@@ -72,10 +72,10 @@ export class CustomHeader extends Component {
                   source={IMAGE.ICON_RETURN}
                   resizeMode="contain"
                 />
-                <Text style={{ width: wp('8%'), color: '#463F3A', top: hp('1.5%') }}>Back</Text>
+                <Text style={{ width: wp('9%'), color: '#463F3A', top: hp('1.5%') }}>Back</Text>
               </TouchableOpacity>
             </View>
-            <View style={{ justifyContent: 'center', textAlign: 'center', left: wp('15%') }}>
+            <View style={{ justifyContent: 'center', textAlign: 'center', left: wp('14%') }}>
               <TouchableOpacity
                 onPress={() => this.props.navigation.navigate('Main')}>
                 <Image style={styles.logoIcon} source={IMAGE.ICON_LOGO} />
@@ -83,7 +83,7 @@ export class CustomHeader extends Component {
             </View>
             <View
               style={{
-                flex: 1, justifyContent: 'center', left: wp('31%')
+                flex: 1, justifyContent: 'center', left: wp('30%')
               }}>
               <Image
                 source={{ uri: this.props.patienDetailes.picture }}
@@ -141,17 +141,17 @@ export class CustomHeader extends Component {
                   source={IMAGE.ICON_RETURN}
                   resizeMode="contain"
                 />
-                <Text style={{ width: wp('8%'), color: '#463F3A', top: hp('1.5%') }}>Back</Text>
+                <Text style={{ width: wp('9%'), color: '#463F3A', top: hp('1.5%') }}>Back</Text>
               </TouchableOpacity>
             </View>
-            <View style={{ justifyContent: 'center', textAlign: 'center', left: wp('15%') }}>
+            <View style={{ justifyContent: 'center', textAlign: 'center', left: wp('14%') }}>
               <View>
                 <Image style={styles.logoIcon} source={IMAGE.ICON_LOGO} />
               </View>
             </View>
             <View
               style={{
-                flex: 1, justifyContent: 'center', left: wp('31%')
+                flex: 1, justifyContent: 'center', left: wp('30%')
               }}>
               <Image
                 source={{ uri: this.props.patienDetailes.picture }}
