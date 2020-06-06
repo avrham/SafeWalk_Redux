@@ -438,8 +438,6 @@ export class TestProcess extends Component {
         else
             return this.renderTestResults();
 
-
-        
     }
 }
 

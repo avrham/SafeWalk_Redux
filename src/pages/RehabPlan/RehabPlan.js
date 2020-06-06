@@ -187,6 +187,7 @@ export class RehabPlan extends Component {
                                     radius={27}
                                     borderWidth={4}
                                     color="#3399FF"
+                                    bgColor="#edece7"
                                      >
                                     <Text style={{ fontSize: 14 }}>{this.props.rehabProgress}%</Text>
                                     </ProgressCircle>

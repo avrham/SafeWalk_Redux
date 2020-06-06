@@ -69,13 +69,14 @@ export class Main extends Component {
                         {this.props.rehabExsist && (
                             <TouchableOpacity
                                 style={styles.ProgressBarAnimated}
-                                onPress={() => this.props.navigation.navigate('RehabPlan')}>
+                                onPress={() => this.props.navigation.navigate('Rehabilitation Program')}>
                                 <Text style={styles.label}>You've completed</Text>
                                 <ProgressCircle
                                     percent={this.props.rehabProgress}
                                     radius={27}
                                     borderWidth={4}
                                     color="#3399FF"
+                                    bgColor="#edece7"
                                 >
                                 <Text style={{ fontSize: 14 }}>{this.props.rehabProgress}%</Text>
                                 </ProgressCircle>
