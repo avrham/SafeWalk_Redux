@@ -467,7 +467,7 @@ const styles = StyleSheet.create({
         //fontFamily: 'ComicNeue-BoldItalic',
         justifyContent: 'center',
         textAlign: 'center',
-        padding: wp('5%'),
+        padding: wp('2%'),
     },
     alertImg: {
         width: wp('15%'),
@@ -475,8 +475,7 @@ const styles = StyleSheet.create({
         marginBottom: hp('7%'),
     },
     SafeAreaAlert: {
-       flex:1,
-       top:hp('10%')
+        top: hp('18%'),
     },
     lottie: {
         width: wp('55%'),

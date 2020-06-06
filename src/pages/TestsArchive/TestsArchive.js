@@ -91,7 +91,7 @@ export class TestsArchive extends Component {
                                     resizeMode="contain"
                                 />
                                 <Text style={styles.message}>
-                                    The system does not yet have a tests of your
+                                    We could not found any rehabilitation program at this moment
                                 </Text>
                                 <Text style={styles.message}>
                                     Please come back to the main screen and start a test
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     viewAlert: {
-        flex: 1,
+        top: hp('18%'),
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
         //fontFamily: 'ComicNeue-BoldItalic',
         justifyContent: 'center',
         textAlign: 'center',
-        padding: hp('4%'),
+        padding: hp('2%'),
     },
     TitleContainer: {
         borderBottomWidth: 1,
