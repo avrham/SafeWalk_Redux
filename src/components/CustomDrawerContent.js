@@ -3,8 +3,7 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  ImageBackground,
-  StatusBar,
+  View,
   StyleSheet
 } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer";
@@ -30,15 +29,14 @@ function CustomDrawerContent({progress,...props}){
     })
     return(
         <LinearGradient colors={['#8A817C', '#F4F3EE']} style={styles.gradient}>
-             <ImageBackground
-                source={IMAGE.BACKGRUND}
-                style={{padding: hp('2%'), paddingTop: hp('8%')}}>
+             <View
+                style={{padding: hp('2%'), paddingTop: hp('5%'), borderBottomColor:'#463F3A',borderBottomWidth:1}}>
                 <Image
                     source={{uri: props.patienDetailes.picture}}
                     style={styles.sideMenuProfileIcon}
                 />
                 <Text style={styles.name}>{props.patienDetailes.name}</Text>
-            </ImageBackground>
+            </View>
             <DrawerContentScrollView {...props}>
                 <Animated.View style={{transform: [{translateX}]}}>
                     <DrawerItemList activeTintColor='#463F3A' {...props}>
@@ -67,12 +65,12 @@ const styles = StyleSheet.create({
   sideMenuProfileIcon: {
     height: hp('9%'),
     width: wp('20%'),
-    borderWidth: 3,
+    borderWidth: 2,
     borderRadius: 40,
-    borderColor: '#fff',
+    borderColor: '#463F3A',
   },
   name: {
-    color: '#fff',
+    color: '#463F3A',
     fontSize: wp('5%'),
     fontWeight: 'bold',
     marginVertical: 8,

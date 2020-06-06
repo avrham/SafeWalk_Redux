@@ -100,6 +100,7 @@ export class Login extends Component {
                                         returnKeyType="next"
                                         autoCorrect={true}
                                         value={this.state.email}
+                                        onSubmitEditing={() => this.refs.txtPassword.focus()}
                                     />
                                     <TextInput
                                         onChangeText={this.onChangePassword}
@@ -110,10 +111,13 @@ export class Login extends Component {
                                         returnKeyType="go"
                                         secureTextEntry
                                         autoCorrect={false}
+                                        ref={'Go'}
                                         value={this.state.password}
+                                        onSubmitEditing={this.login}
                                     />
                                     <TouchableOpacity
                                         style={styles.buttonContainer}
+                                        ref={'Go'}
                                         onPress={this.login}>
                                         <Text style={styles.buttonText}>SIGN IN</Text>
                                     </TouchableOpacity>
@@ -151,7 +155,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-        top: hp('33%'),
+        top: hp('28%'),
         padding: 20,
     },
     input: {

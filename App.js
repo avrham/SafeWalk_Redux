@@ -4,7 +4,6 @@ import store from './src/store';
 import { Provider } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import 'react-native-gesture-handler';
-import { createAppContainer } from 'react-navigation';
 import {createStackNavigator} from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
@@ -15,7 +14,6 @@ import RehabPlan from './src/pages/RehabPlan/RehabPlan';
 import Exercise from './src/pages/Exercise/Exercise';
 import TestsArchive from './src/pages/TestsArchive/TestsArchive';
 import Instruction from './src/pages/Instruction/Instruction';
-import CustomHeader from './src/components/CustomHeader';
 import CustomDrawerContent from './src/components/CustomDrawerContent';
 
 
@@ -56,11 +54,9 @@ const TestsArchiveStack = () => (
         name="TestsArchive"
         component={TestsArchive}
         options={navOptionHandler}
-
       />
     </StackestsArchive.Navigator>
   );
-
 
 const StackRehabPlan = createStackNavigator();
 
@@ -70,7 +66,6 @@ const RehabPlanStack = () => (
         name="RehabPlan"
         component={RehabPlan}
         options={navOptionHandler}
-
       />
       <StackRehabPlan.Screen
         name="Exercise"
@@ -88,8 +83,8 @@ function DrawerNavigator({navigation}) {
       initialRouteName="Main"
       drawerContent= {props => <CustomDrawerContent {...props}/>}>
       <Drawer.Screen name="Main" component={TestStack} />
-      <Drawer.Screen name="RehabPlan" component={RehabPlanStack} />
-      <Drawer.Screen name="Tests archive" component={TestsArchiveStack} />
+      <Drawer.Screen name="Rehabilitation Program" component={RehabPlanStack} />
+      <Drawer.Screen name="Tests Archive" component={TestsArchiveStack} />
     </Drawer.Navigator>
   );
 }
