@@ -246,7 +246,6 @@ const styles = StyleSheet.create({
     },
     Button: {
         width: 200,
-        backgroundColor: 'black'
     },
 
     ProgressBarAnimated: {
