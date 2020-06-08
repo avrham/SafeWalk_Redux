@@ -38,6 +38,7 @@ export const authenticate = (user_name, password) => async dispatch => {
       },
     };
     const patienDetailes = await axios(options);
+
     if (!(patienDetailes.data.rehabPlanID==="")) {
       const rehabPlanId = patienDetailes.data.rehabPlanID;
       options = {
@@ -54,6 +55,8 @@ export const authenticate = (user_name, password) => async dispatch => {
     }
   }
   catch (err) {
+    console.log(err);
+    
     dispatch(handleError(err.response.data.message));
     throw new Error(err.response.data.message)
   }

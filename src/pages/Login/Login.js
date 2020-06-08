@@ -65,7 +65,7 @@ export class Login extends Component {
             this.setState({ visible: false })
         }
         catch (err) {
-            //console.log(err.message)
+            console.log(err.message)
             Alert.alert('Alert',err.message, [{text:'OK' ,onPress:()=> this.setState({ visible: false })}])
         }
     }
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     logo: {
-        top: hp('24%'),
+        top: hp('20%'),
         width: wp('55%'),
         height: hp('10%'),
     },
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-        top: hp('28%'),
+        top: hp('24%'),
         padding: 20,
     },
     input: {
@@ -170,8 +170,8 @@ const styles = StyleSheet.create({
 
     buttonContainer: {
         backgroundColor: '#8A817C',
-        width: Dimensions.get('window').width * 0.7,
-        height: Dimensions.get('window').height * 0.058,
+        width: wp('80%'),
+        height: hp('6%'),
         borderRadius: 9,
         paddingVertical: 15,
         alignItems: 'center',
