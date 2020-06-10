@@ -7,7 +7,7 @@ import {
     Image,
     StyleSheet,
     TouchableOpacity,
-    Alert
+    Alert,
 } from 'react-native';
 import CustomHeader from '../../components/CustomHeader'
 import { IMAGE } from '../../constans/Image';
@@ -20,7 +20,9 @@ import {
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Moment from 'moment';
-import ProgressCircle from 'react-native-progress-circle'
+import ProgressCircle from 'react-native-progress-circle';
+import { CheckBox } from 'react-native-elements';
+
 
 
 
@@ -41,7 +43,10 @@ export class RehabPlan extends Component {
             videoStatusArray: [],
             videoIds: '',
             AllVideoDetails: [],
-            mergeArray: []
+            mergeArray: [],
+            highCheck:false,
+            mediumCheck:false,
+            lowCheack:false
         }
     }
 
@@ -85,13 +90,18 @@ export class RehabPlan extends Component {
                 </View>
             </TouchableOpacity>
         ) : (
-            <View
-            style={styles.listItemDesable}>
+            <TouchableOpacity
+                onPress={() =>
+                    this.props.navigation.navigate('Exercise', {
+                        id: item.id
+                    })
+                }
+                style={styles.listItemDesable}>
                 <View style={{padding:10,justifyContent:'center', textAlign:'center'}}>
-                <Image source={IMAGE.ICONE_DONE} desabled
+                <Image source={IMAGE.ICONE_DONE}
                     style={styles.itemImg}
                     resizeMode="contain" />
-            </View>
+                </View>
             <View style={{justifyContent:'center', textAlign:'center', left:wp('2%')}}>
                 <Text style={styles.titleItem}>
                     {item.name}
@@ -103,7 +113,7 @@ export class RehabPlan extends Component {
                     {`Times left: ${item.timesLeft}`}
                 </Text>
             </View>
-        </View>
+        </TouchableOpacity>
         );
     };
 
@@ -171,6 +181,13 @@ export class RehabPlan extends Component {
                                         {this.props.rehabPlan.instructions}
                                     </Text>
                                 </Text>
+                            </View>
+                            <View style={{flexDirection: 'row', paddingBottom:hp('2%')}}>
+                                <CheckBox value={this.state.highCheck} onChange={()=>this.highCheck()}></CheckBox>
+                                <CheckBox value={this.state.mediumCheck} onChange={()=>this.mediumCheck()}></CheckBox>
+                                <CheckBox value={this.state.lowCheack} onChange={()=>this.lowCheack()}></CheckBox>
+
+                                
                             </View>
                             <View style={styles.listContainer}>
                                 <FlatList
@@ -283,7 +300,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         height:hp('10%'),
         backgroundColor:'#8A817C',
-        opacity:0.5,
         marginBottom:10,
         borderRadius:5,
     },

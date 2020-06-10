@@ -30,6 +30,7 @@ export const authenticate = (user_name, password) => async dispatch => {
   try {
     const loginDetails = await axios(options);
     const userToken  = loginDetails.data.token
+    
     const patientId = loginDetails.data.id
     options = {
       url: `${config.SERVER_URL}/patient/${patientId}`,
