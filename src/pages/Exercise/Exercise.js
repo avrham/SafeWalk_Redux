@@ -36,6 +36,10 @@ export class Exercise extends Component {
     }
 
     componentDidMount() {
+        if (this.props.rehabExsist) {
+            const item = this.props.MergeArray.filter(element => element.id === this.props.route.params.id)[0]
+            item.timesLeft > 0 ? null : this.setState({ disable: true })
+        }
         setTimeout(() => {
             this.setState({ visible: false });
         }, 2000);

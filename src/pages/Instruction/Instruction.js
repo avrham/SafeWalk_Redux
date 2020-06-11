@@ -47,7 +47,7 @@ export class Instruction extends Component {
             <View style={styles.videoScreen}>
               <WebView
                 style={{ width: wp('100%') }}
-                source={{ uri: 'https://www.youtube.com/embed/CdCClhtKH2Q' }}
+                source={{ uri: 'https://www.youtube.com/embed/TgD4cpSBA28' }}
                 scalesPageToFit={false}
               />
             </View>
