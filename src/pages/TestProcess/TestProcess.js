@@ -50,8 +50,8 @@ export class TestProcess extends Component {
             const { IPs } = await this.getKitDetails(token);
             const test = await this.createTest(token);
             testID = test.id;
-            let promise1; // promise2, promise3, promise4, promise5, promise6, promise7;
-            this.setState({ visible: false, waiting:false,inProcess:true });
+            let promise1, promise2; // promise3, promise4, promise5, promise6, promise7;
+            this.setState({ visible: false, waiting: false, inProcess: true });
             timeout = setTimeout(() => {
                 this.setState({
                     shouldStand: false,
@@ -59,14 +59,14 @@ export class TestProcess extends Component {
                 });
             }, 5000);
             promise1 = this.scanGaitAndAnalyze(IPs.sensor1, 'sensor1', token, testID);
-            // promise2 = this.scanGaitAndAnalyze(IPs.sensor2, 'sensor2', token, testID);
+            promise2 = this.scanGaitAndAnalyze(IPs.sensor2, 'sensor2', token, testID);
             // promise3 = this.scanGaitAndAnalyze(IPs.sensor3, 'sensor3', token, testID);
             // promise4 = this.scanGaitAndAnalyze(IPs.sensor4, 'sensor4', token, testID);
             // promise5 = this.scanGaitAndAnalyze(IPs.sensor5, 'sensor5', token, testID);
             // promise6 = this.scanGaitAndAnalyze(IPs.sensor6, 'sensor6', token, testID);
             // promise7 = this.scanGaitAndAnalyze(IPs.sensor7, 'sensor7', token, testID);
             // const conclusions = await Promise.all([promise1, promise2, promise3, promise4, promise5, promise6, promise7]);
-            const conclusions = await Promise.all([promise1]);
+            const conclusions = await Promise.all([promise1, promise2]);
             let abnormality = false,
                 waitingStatus = false;
             for (let conclusion of conclusions)
@@ -75,7 +75,13 @@ export class TestProcess extends Component {
                     waitingStatus = true;
                     break;
                 }
-            await this.updateTest(token, testID, abnormality);
+            let overview = `Patient's gait cycle has been tested and found to be ok.`;
+            if (abnormality) {
+                overview = `Deviation in patient's walk has been detected in the following sensors:\n`;
+                for (let index = 1; index <= conclusions.length; index++)
+                    overview += `${index}. Sensor${index}\n`;
+            }
+            await this.updateTest(token, testID, abnormality, overview);
             await this.updatePatient(
                 token,
                 this.props.patienDetailes.id,
@@ -84,18 +90,18 @@ export class TestProcess extends Component {
             this.setState({
                 visible: false,
                 inProcess: false,
-                result:true,
+                result: true,
                 abnormality: abnormality,
             });
         } catch (err) {
-            if (testID) 
-            await this.removeTest(token, testID);
+            if (testID)
+                await this.removeTest(token, testID);
             clearTimeout(timeout);
             this.setState({
                 errorMessage: err.message,
             });
-            Alert.alert('Alert',err.message, [{text:'Cancel' ,onPress:() => this.props.navigation.navigate('Main')}])
-            console.log(err.message);           
+            Alert.alert('Alert', err.message, [{ text: 'Cancel', onPress: () => this.props.navigation.navigate('Main') }])
+            console.log(err.message);
         }
     }
 
@@ -215,7 +221,7 @@ export class TestProcess extends Component {
     updateTest(token, testID, abnormality) {
         return new Promise(async (resolve, reject) => {
             try {
-                const body = { abnormality: abnormality };
+                const body = { abnormality, overview };
                 const options = {
                     headers: {
                         'Content-Type': 'application/json',
@@ -437,7 +443,6 @@ export class TestProcess extends Component {
             return this.renderTestProcess();
         else
             return this.renderTestResults();
-
     }
 }
 

@@ -21,8 +21,7 @@ import {
 } from 'react-native-responsive-screen';
 import Moment from 'moment';
 import ProgressCircle from 'react-native-progress-circle';
-import { CheckBox } from 'react-native-elements';
-
+import CheckBox from '@react-native-community/checkbox';
 
 
 
@@ -97,7 +96,7 @@ export class RehabPlan extends Component {
                     })
                 }
                 style={styles.listItemDesable}>
-                <View style={{padding:10,justifyContent:'center', textAlign:'center'}}>
+                <View style={{padding:hp('2%'),justifyContent:'center', textAlign:'center'}}>
                 <Image source={IMAGE.ICONE_DONE}
                     style={styles.itemImg}
                     resizeMode="contain" />
@@ -182,13 +181,22 @@ export class RehabPlan extends Component {
                                     </Text>
                                 </Text>
                             </View>
-                            <View style={{flexDirection: 'row', paddingBottom:hp('2%')}}>
-                                <CheckBox value={this.state.highCheck} onChange={()=>this.highCheck()}></CheckBox>
-                                <CheckBox value={this.state.mediumCheck} onChange={()=>this.mediumCheck()}></CheckBox>
-                                <CheckBox value={this.state.lowCheack} onChange={()=>this.lowCheack()}></CheckBox>
-
+                            <View style={{flexDirection: 'row'}}>
+                                <View style={{flexDirection: 'row'}}>
+                                    <Text style={styles.txtCheckBox}>H</Text>
+                                    <CheckBox  disabled={false} value={this.state.highCheck} onChange={()=>this.highCheck()} lineWidth={3} tintColor={'#8A817C'}/>
+                                </View>
+                                <View style={{flexDirection: 'row', left:wp('3%')}}>
+                                    <Text style={styles.txtCheckBox}>M</Text>
+                                    <CheckBox  disabled={false} value={this.state.mediumCheck} onChange={()=>this.mediumCheck()} lineWidth={3} tintColor={'#8A817C'}/>
+                                </View>
                                 
+                                <View style={{flexDirection: 'row', left:30}}>
+                                     <Text style={styles.txtCheckBox}>L</Text>
+                                    <CheckBox  disabled={false} value={this.state.lowCheack} onChange={()=>this.lowCheack()} lineWidth={3} tintColor={'#8A817C'}/>
+                                </View>
                             </View>
+                          
                             <View style={styles.listContainer}>
                                 <FlatList
                                     data={(this.props.MergeArray.sort((a, b) => a.priorityNumber.localeCompare(b.priorityNumber)))}
@@ -284,6 +292,12 @@ const styles = StyleSheet.create({
         opacity:0.8,
         fontSize:wp('4%'),        
         //fontFamily: 'Lato-Bold',
+    },
+    txtCheckBox:{
+        color: '#463F3A',
+        top:hp('1%'), 
+        paddingRight:wp('2%'), 
+        fontSize:14
     },
     listContainer:{
         width: wp('90%'), paddingTop:hp('1%'),

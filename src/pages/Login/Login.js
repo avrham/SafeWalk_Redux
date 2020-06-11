@@ -60,8 +60,9 @@ export class Login extends Component {
     login = async () => {
         this.setState({ visible: true })
         try {
-            await this.props.authenticate(this.state.email, this.state.password);            
-            this.props.navigation.navigate('HomeApp')
+            await this.props.authenticate(this.state.email, this.state.password); 
+                       
+            this.props.navigation.navigate('Main')
             this.setState({ visible: false })
         }
         catch (err) {

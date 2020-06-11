@@ -102,7 +102,7 @@ export default function App(){
         <NavigationContainer>
         <StackApp.Navigator initialRouteName="Login">
           <StackApp.Screen
-            name="HomeApp"
+            name="Main"
             component={DrawerNavigator}
             options={navOptionHandler}
           />

@@ -13,6 +13,8 @@ export const calculateProgress = (rehabPlan) => dispatch => {
   }
   const rehabProgress = Number((1 - (totalLeft / totalTimes))*100).toFixed(0);
 
+
  dispatch(handlecalculateProgress(rehabProgress,totalTimes));
+
 };
 
