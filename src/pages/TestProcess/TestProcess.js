@@ -59,14 +59,14 @@ export class TestProcess extends Component {
                 });
             }, 5000);
             promise1 = this.scanGaitAndAnalyze(IPs.sensor1, 'sensor1', token, testID);
-            promise2 = this.scanGaitAndAnalyze(IPs.sensor2, 'sensor2', token, testID);
+            //promise2 = this.scanGaitAndAnalyze(IPs.sensor2, 'sensor2', token, testID);
             // promise3 = this.scanGaitAndAnalyze(IPs.sensor3, 'sensor3', token, testID);
             // promise4 = this.scanGaitAndAnalyze(IPs.sensor4, 'sensor4', token, testID);
             // promise5 = this.scanGaitAndAnalyze(IPs.sensor5, 'sensor5', token, testID);
             // promise6 = this.scanGaitAndAnalyze(IPs.sensor6, 'sensor6', token, testID);
             // promise7 = this.scanGaitAndAnalyze(IPs.sensor7, 'sensor7', token, testID);
             // const conclusions = await Promise.all([promise1, promise2, promise3, promise4, promise5, promise6, promise7]);
-            const conclusions = await Promise.all([promise1, promise2]);
+            const conclusions = await Promise.all([promise1]);
             let abnormality = false,
                 waitingStatus = false;
             for (let conclusion of conclusions)
@@ -77,9 +77,11 @@ export class TestProcess extends Component {
                 }
             let overview = `Patient's gait cycle has been tested and found to be ok.`;
             if (abnormality) {
-                overview = `Deviation in patient's walk has been detected in the following sensors:\n`;
-                for (let index = 1; index <= conclusions.length; index++)
-                    overview += `${index}. Sensor${index}\n`;
+                overview = `Deviation in patient's walk has been detected in the following sensors: `;
+                for (let index = 0; index < conclusions.length; index++)
+                    if (conclusions[index].failureObserved)
+                        overview += `Sensor ${index + 1}, `;
+                overview = overview.substring(0, overview.length - 2);
             }
             await this.updateTest(token, testID, abnormality, overview);
             await this.updatePatient(
@@ -116,7 +118,6 @@ export class TestProcess extends Component {
           return;
         }
       }
-
 
     getKitDetails(token) {
         return new Promise(async (resolve, reject) => {
@@ -375,7 +376,6 @@ export class TestProcess extends Component {
     }
 
     renderTestResults() {
-        //this.state.errorMessage ? alert(this.state.errorMessage) : null;
         return (
             <LinearGradient colors={['#8A817C', '#F4F3EE']} style={styles.gradient}>
                 <SafeAreaView style={styles.app}>

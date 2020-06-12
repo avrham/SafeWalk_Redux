@@ -11,6 +11,8 @@ const IMAGE = {
     ICOM_ALERT: require('../../assets/images/alert.png'),
     ICON_TESTOK: require('../../assets/images/OK.png'),
     BACKGRUND: require('../../assets/images/backgrund.jpeg'),
+    FILTER: require('../../assets/images/filter.png'),
+
   };
   
   export {IMAGE};

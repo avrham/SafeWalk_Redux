@@ -8,6 +8,7 @@ import {
     StyleSheet,
     TouchableOpacity,
     Alert,
+    Button
 } from 'react-native';
 import CustomHeader from '../../components/CustomHeader'
 import { IMAGE } from '../../constans/Image';
@@ -22,6 +23,8 @@ import {
 import Moment from 'moment';
 import ProgressCircle from 'react-native-progress-circle';
 import CheckBox from '@react-native-community/checkbox';
+import Modal from 'react-native-modal';
+
 
 
 
@@ -43,9 +46,11 @@ export class RehabPlan extends Component {
             videoIds: '',
             AllVideoDetails: [],
             mergeArray: [],
-            highCheck:false,
-            mediumCheck:false,
-            lowCheack:false
+            highCheck: false,
+            mediumCheck: false,
+            lowCheack: false,
+            isModalVisible: false,
+
         }
     }
 
@@ -58,10 +63,15 @@ export class RehabPlan extends Component {
             }
             catch (err) {
                 console.log(err.message);
-                Alert.alert('Alert',err.message, [{text:'OK' ,onPress:()=> this.setState({ visible: false })}])
+                Alert.alert('Alert', err.message, [{ text: 'OK', onPress: () => this.setState({ visible: false }) }])
             }
         }
     }
+
+    toggleModal = () => {
+        this.setState({isModalVisible: !this.state.isModalVisible});
+      };
+
     renderItem = ({ item }) => {
         return item.timesLeft != 0 ? (
             <TouchableOpacity
@@ -71,12 +81,12 @@ export class RehabPlan extends Component {
                     })
                 }
                 style={styles.listItem}>
-                    <View style={{padding:hp('2%'),justifyContent:'center', textAlign:'center'}}>
+                <View style={{ padding: hp('2%'), justifyContent: 'center', textAlign: 'center' }}>
                     <Image source={IMAGE.ICOM_ALERT}
                         style={styles.itemImg}
                         resizeMode="contain" />
                 </View>
-                <View style={{justifyContent:'center', textAlign:'center', left:wp('2%')}}>
+                <View style={{ justifyContent: 'center', textAlign: 'center', left: wp('2%') }}>
                     <Text style={styles.titleItem}>
                         {item.name}
                     </Text>
@@ -89,38 +99,38 @@ export class RehabPlan extends Component {
                 </View>
             </TouchableOpacity>
         ) : (
-            <TouchableOpacity
-                onPress={() =>
-                    this.props.navigation.navigate('Exercise', {
-                        id: item.id
-                    })
-                }
-                style={styles.listItemDesable}>
-                <View style={{padding:hp('2%'),justifyContent:'center', textAlign:'center'}}>
-                <Image source={IMAGE.ICONE_DONE}
-                    style={styles.itemImg}
-                    resizeMode="contain" />
-                </View>
-            <View style={{justifyContent:'center', textAlign:'center', left:wp('2%')}}>
-                <Text style={styles.titleItem}>
-                    {item.name}
-                </Text>
-                <Text style={styles.titleItem}>
-                    {`Priority: ${item.priority}`}
-                </Text>
-                <Text style={styles.titleItem}>
-                    {`Times left: ${item.timesLeft}`}
-                </Text>
-            </View>
-        </TouchableOpacity>
-        );
+                <TouchableOpacity
+                    onPress={() =>
+                        this.props.navigation.navigate('Exercise', {
+                            id: item.id
+                        })
+                    }
+                    style={styles.listItemDesable}>
+                    <View style={{ padding: hp('2%'), justifyContent: 'center', textAlign: 'center' }}>
+                        <Image source={IMAGE.ICONE_DONE}
+                            style={styles.itemImg}
+                            resizeMode="contain" />
+                    </View>
+                    <View style={{ justifyContent: 'center', textAlign: 'center', left: wp('2%') }}>
+                        <Text style={styles.titleItem}>
+                            {item.name}
+                        </Text>
+                        <Text style={styles.titleItem}>
+                            {`Priority: ${item.priority}`}
+                        </Text>
+                        <Text style={styles.titleItem}>
+                            {`Times left: ${item.timesLeft}`}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+            );
     };
 
     renderMessage() {
         return (
             <LinearGradient colors={['#8A817C', '#F4F3EE']} style={styles.gradient}>
                 <SafeAreaView style={styles.app}>
-                <CustomHeader headerNormal={true} navigation={this.props.navigation} />
+                    <CustomHeader headerNormal={true} navigation={this.props.navigation} />
                     <View style={styles.background}>
                         <SafeAreaView>
                             <View style={styles.viewAlert}>
@@ -164,16 +174,16 @@ export class RehabPlan extends Component {
                                 {this.props.rehabPlan.name}
                             </Text>
                         </View>
-                        <View style={{ flex: 1, width:wp('90%'), paddingBottom:hp('2%'), paddingTop:hp('2%') }}>
-                            <View style={{flexDirection: 'row', paddingBottom:hp('2%')}}>
+                        <View style={{ flex: 1, width: wp('90%'), paddingBottom: hp('2%'), paddingTop: hp('2%') }}>
+                            <View style={{ flexDirection: 'row', paddingBottom: hp('2%') }}>
                                 <Text style={styles.staticSentence}>
                                     {'To be completed until: '}
                                     <Text style={styles.descriptionPlan}>
-                                    {Moment(this.props.rehabPlan.executionTime).format('DD/MM/YYYY')}
+                                        {Moment(this.props.rehabPlan.executionTime).format('DD/MM/YYYY')}
                                     </Text>
                                 </Text>
                             </View>
-                            <View style={{flexDirection: 'row', paddingBottom:hp('2%')}}>
+                            <View style={{ flexDirection: 'row', paddingBottom: hp('0%') }}>
                                 <Text style={styles.staticSentence}>
                                     {'Instructions: '}
                                     <Text style={styles.descriptionPlan}>
@@ -181,7 +191,21 @@ export class RehabPlan extends Component {
                                     </Text>
                                 </Text>
                             </View>
-                            <View style={{flexDirection: 'row'}}>
+                            <TouchableOpacity onPress={this.toggleModal} style={{flexDirection:'row-reverse',right:10}}>
+                                 <Image
+                                    source={IMAGE.FILTER}
+                                    style={styles.filterImg}
+                                    resizeMode="contain"
+                                />
+                            </TouchableOpacity >
+                                <Modal isVisible={this.state.isModalVisible}>
+                                <View >
+                                    <Text>Hello!</Text>
+                                    <Button title="Applay Filter" onPress={this.toggleModal} />
+                                </View>
+                                </Modal>
+                               
+                            {/* <View style={{flexDirection: 'row'}}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={styles.txtCheckBox}>H</Text>
                                     <CheckBox  disabled={false} value={this.state.highCheck} onChange={()=>this.highCheck()} lineWidth={3} tintColor={'#8A817C'}/>
@@ -195,26 +219,26 @@ export class RehabPlan extends Component {
                                      <Text style={styles.txtCheckBox}>L</Text>
                                     <CheckBox  disabled={false} value={this.state.lowCheack} onChange={()=>this.lowCheack()} lineWidth={3} tintColor={'#8A817C'}/>
                                 </View>
-                            </View>
-                          
+                            </View> */}
+
                             <View style={styles.listContainer}>
                                 <FlatList
                                     data={(this.props.MergeArray.sort((a, b) => a.priorityNumber.localeCompare(b.priorityNumber)))}
                                     renderItem={this.renderItem}
                                 />
                             </View>
-                            <View style={{justifyContent: 'flex-end'}}>
+                            <View style={{ justifyContent: 'flex-end' }}>
                                 <View
                                     style={styles.ProgressBarAnimated}>
                                     <Text style={styles.label}>You've completed</Text>
                                     <ProgressCircle
-                                    percent={this.props.rehabProgress}
-                                    radius={27}
-                                    borderWidth={4}
-                                    color="#3399FF"
-                                    bgColor="#edece7"
-                                     >
-                                    <Text style={{ fontSize: 14 }}>{this.props.rehabProgress}%</Text>
+                                        percent={this.props.rehabProgress}
+                                        radius={27}
+                                        borderWidth={4}
+                                        color="#3399FF"
+                                        bgColor="#edece7"
+                                    >
+                                        <Text style={{ fontSize: 14 }}>{this.props.rehabProgress}%</Text>
                                     </ProgressCircle>
                                     <Text style={styles.label}>of your rehab program</Text>
                                 </View>
@@ -228,7 +252,7 @@ export class RehabPlan extends Component {
     }
 
     render() {
-        if (this.props.rehabExsist && !(this.props.MergeArray===null)) {
+        if (this.props.rehabExsist && !(this.props.MergeArray === null)) {
             return this.renderRehabPlan();
         }
         else {
@@ -269,11 +293,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: hp('2%'),
     },
-    descriptionTitleContainer:{
-        borderBottomWidth:1,
-        borderBottomColor:'#463F3A',
-        padding:10,
-        width:'100%'
+    descriptionTitleContainer: {
+        borderBottomWidth: 1,
+        borderBottomColor: '#463F3A',
+        padding: 10,
+        width: '100%'
     },
     descriptionTitle: {
         color: '#463F3A',
@@ -282,55 +306,59 @@ const styles = StyleSheet.create({
         top: 0,
         textAlign: 'center',
     },
-    staticSentence:{
-        color:'#463F3A',
-        fontSize:wp('4.4%'),
-        fontWeight:'bold'
+    staticSentence: {
+        color: '#463F3A',
+        fontSize: wp('4.4%'),
+        fontWeight: 'bold'
     },
     descriptionPlan: {
-        color:'#463F3A',
-        opacity:0.8,
-        fontSize:wp('4%'),        
+        color: '#463F3A',
+        opacity: 0.8,
+        fontSize: wp('4%'),
         //fontFamily: 'Lato-Bold',
     },
-    txtCheckBox:{
-        color: '#463F3A',
-        top:hp('1%'), 
-        paddingRight:wp('2%'), 
-        fontSize:14
+    filterImg:{
+        width: wp('8%'),
+        height: hp('6%'),
     },
-    listContainer:{
-        width: wp('90%'), paddingTop:hp('1%'),
-        flex:1
+    txtCheckBox: {
+        color: '#463F3A',
+        top: hp('1%'),
+        paddingRight: wp('2%'),
+        fontSize: 14
+    },
+    listContainer: {
+        width: wp('90%'), paddingTop: hp('0%'),
+        flex: 1
     },
     listItem: {
         flexDirection: 'row',
-        height:hp('10%'),
-        backgroundColor:'#8A817C',
-        marginBottom:10,
-        borderRadius:5,
+        height: hp('10%'),
+        backgroundColor: '#8A817C',
+        marginBottom: 10,
+        borderRadius: 5,
     },
-    listItemDesable:{
+    listItemDesable: {
         flexDirection: 'row',
-        height:hp('10%'),
-        backgroundColor:'#8A817C',
-        marginBottom:10,
-        borderRadius:5,
+        height: hp('10%'),
+        backgroundColor: '#8A817C',
+        marginBottom: 10,
+        borderRadius: 5,
     },
     titleItem: {
         color: '#F4F3EE',
-        padding:hp('0.35%'),
-        fontSize:wp('3.8%')
+        padding: hp('0.35%'),
+        fontSize: wp('3.8%')
     },
     itemImg: {
         width: wp('8%'),
         height: hp('10%'),
     },
     ProgressBarAnimated: {
-        width:'100%',
-        top:hp('2%'),
+        width: '100%',
+        top: hp('2%'),
         flexDirection: 'row',
-        textAlign:'center',
+        textAlign: 'center',
         justifyContent: 'center',
 
     },
@@ -344,7 +372,7 @@ const styles = StyleSheet.create({
         //fontFamily: 'Lato-Regular',
         borderColor: '#8A817C',
         padding: wp('2%'),
-        top:hp('0.6%')
+        top: hp('0.6%')
     },
 });
 
