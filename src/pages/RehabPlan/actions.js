@@ -1,9 +1,11 @@
-import { GET_VIDEO_DETAILES, ERROR,RESET_ERROR } from './action_types';
+import { GET_VIDEO_DETAILES, ERROR,RESET_ERROR,FILTER_DATA } from './action_types';
 import axios from 'axios';
 import config from '../../../config.json'
 import mergeByKey from 'array-merge-by-key';
 
 export const handlegetVideoDetailes = MergeArray => ({ type: GET_VIDEO_DETAILES, payload: MergeArray });
+
+export const handlefilterData = MergeArray => ({ type: FILTER_DATA, payload: MergeArray });
 
 export const handleResetError = () => ({ type: RESET_ERROR, payload: '' });
 
@@ -54,8 +56,71 @@ export const getVideoDetailes = (userToken, rehabPlan) => async dispatch => {
     
   }
 
-  export const resetError = () =>  dispatch => {
-    dispatch(handleResetError());
-  }
+export const filterData = (MergeArray, filterOption) => async dispatch => {
+
+  const {highCheck,mediumCheck,lowCheack,showDone,showNotDone} = filterOption
+
+
+  const newMergeArray = MergeArray.filter((item)=>{
+
+    if(highCheck&&mediumCheck&&lowCheack&&showDone&&showNotDone || !highCheck&&!mediumCheck&&!lowCheack&&!showDone&&!showNotDone ){
+      return item
+    }
+
+    if(showDone){
+      if (highCheck && item.priorityNumber === 'a' && item.timesLeft===0){
+        return item;
+      }
+      if(mediumCheck && item.priorityNumber ==='b'&& item.timesLeft===0){
+        return item;
+      }
+      if(lowCheack && item.priorityNumber ==='c'&& item.timesLeft===0){
+        return item;
+      }
+      else{
+        if (item.timesLeft===0){
+          return item
+        }
+     }
+    }
+    else{
+      if(showNotDone ){
+        if (highCheck && item.priorityNumber === 'a'&& item.timesLeft!==0){
+         return item;
+       }
+       if(mediumCheck && item.priorityNumber ==='b'&& item.timesLeft!==0){
+         return item;
+       }
+       if(lowCheack && item.priorityNumber ==='c'&& item.timesLeft!==0){
+         return item;
+       }
+       else{
+          if (item.timesLeft!==0){
+            return item
+          }
+       }
+     }
+     else{
+      if (highCheck && item.priorityNumber === 'a'){
+        return item;
+      }
+      if(mediumCheck && item.priorityNumber ==='b'){
+        return item;
+      }
+      if(lowCheack && item.priorityNumber ==='c'){
+        return item;
+      }
+     }
+    }
+  
+    
+  })
+
+  dispatch(handlefilterData(newMergeArray));
+  
+}
+export const resetError = () =>  dispatch => {
+  dispatch(handleResetError());
+}
 
 

@@ -7,15 +7,15 @@ import {
     Image,
     StyleSheet,
     TouchableOpacity,
-    Alert,
-    Button
+    Alert
 } from 'react-native';
+import { Button } from 'react-native-elements';
 import CustomHeader from '../../components/CustomHeader'
 import { IMAGE } from '../../constans/Image';
 import AnimatedLoader from 'react-native-animated-loader';
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
-import { getVideoDetailes } from './actions';
+import { getVideoDetailes, filterData } from './actions';
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
@@ -26,10 +26,9 @@ import CheckBox from '@react-native-community/checkbox';
 import Modal from 'react-native-modal';
 
 
-
-
 const mapStateToProps = state => ({
     MergeArray: state.rehabPlan.MergeArray,
+    FilterArray:state.rehabPlan.FilterArray,
     userToken: state.login.userToken,
     patienDetailes: state.login.patienDetailes,
     rehabPlan: state.login.rehabPlan,
@@ -46,10 +45,14 @@ export class RehabPlan extends Component {
             videoIds: '',
             AllVideoDetails: [],
             mergeArray: [],
-            highCheck: false,
-            mediumCheck: false,
-            lowCheack: false,
             isModalVisible: false,
+            filterOptions: {
+                highCheck: false,
+                mediumCheck: false,
+                lowCheack: false,
+                showDone:false,
+                showNotDone:false
+            }
 
         }
     }
@@ -68,9 +71,15 @@ export class RehabPlan extends Component {
         }
     }
 
+
     toggleModal = () => {
         this.setState({isModalVisible: !this.state.isModalVisible});
       };
+    
+    applayFilter =  () =>{
+        this.props.filterData(this.props.MergeArray, this.state.filterOptions);
+        this.toggleModal();
+ }
 
     renderItem = ({ item }) => {
         return item.timesLeft != 0 ? (
@@ -156,7 +165,7 @@ export class RehabPlan extends Component {
     }
 
     renderRehabPlan() {
-        const { visible } = this.state
+        const { visible } = this.state;
         return (
             <LinearGradient colors={['#8A817C', '#F4F3EE']} style={styles.gradient}>
                 <SafeAreaView style={styles.app}>
@@ -191,39 +200,105 @@ export class RehabPlan extends Component {
                                     </Text>
                                 </Text>
                             </View>
-                            <TouchableOpacity onPress={this.toggleModal} style={{flexDirection:'row-reverse',right:10}}>
+                            <TouchableOpacity onPress={this.toggleModal} style={{flexDirection:'row-reverse'}}>
                                  <Image
                                     source={IMAGE.FILTER}
                                     style={styles.filterImg}
                                     resizeMode="contain"
                                 />
                             </TouchableOpacity >
-                                <Modal isVisible={this.state.isModalVisible}>
-                                <View >
-                                    <Text>Hello!</Text>
-                                    <Button title="Applay Filter" onPress={this.toggleModal} />
-                                </View>
+                                <Modal isVisible={this.state.isModalVisible} backdropColor={'#373a42'} backdropOpacity={0.85}>
+                                    <View style={styles.modelContainer}>
+                                        <TouchableOpacity style={{ justifyContent: 'center', paddingTop:hp('3%') }} onPress={this.toggleModal}>
+                                            <Image source={IMAGE.EXIT}
+                                                style={styles.itemImg}
+                                                resizeMode="contain" />
+                                        </TouchableOpacity>
+                                    <Text style={{color:'#e2e0e5', fontSize:18, textAlign:'center'}}>
+                                        Filters
+                                        </Text> 
+                                        <Text style={{color:'#a1a3a9', paddingBottom:hp('2%'), paddingTop:hp('5%')}}>PRIORITY</Text>
+                                        <View style={{flexDirection: 'row', backgroundColor:'#595961',opacity:0.9, borderRadius:4, width:wp('90%'), height:hp('8%')}}>
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    this.setState({filterOptions:{
+                                                        ...this.state.filterOptions,
+                                                        highCheck:!this.state.filterOptions.highCheck
+                                                    }})
+                                                }
+                                                style={styles.filterBoxWithBorder}>
+                                                <View style={{flexDirection: 'row'}}>
+                                                    <CheckBox disabled={true} value={this.state.filterOptions.highCheck} lineWidth={1} tintColor={'#8A817C'}/>
+                                                    <Text style={styles.txtCheckBox}>HIGH</Text>
+                                                </View>
+                                            
+                                            </TouchableOpacity>
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    this.setState({filterOptions:{
+                                                        ...this.state.filterOptions,
+                                                        mediumCheck:!this.state.filterOptions.mediumCheck
+                                                    }})
+                                                }
+                                                style={styles.filterBoxWithBorder}>
+                                             <View style={{flexDirection: 'row'}}>
+                                                    <CheckBox disabled={true} value={this.state.filterOptions.mediumCheck} lineWidth={1} tintColor={'#8A817C'}/>
+                                                    <Text style={styles.txtCheckBox}>MEDIUM</Text>
+                                                </View>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    this.setState({filterOptions:{
+                                                        ...this.state.filterOptions,
+                                                        lowCheack:!this.state.filterOptions.lowCheack
+                                                    }})
+                                                }
+                                                style={styles.filterBox}>
+                                             <View style={{flexDirection: 'row'}}>
+                                                    <CheckBox disabled={true} value={this.state.filterOptions.lowCheack} lineWidth={1} tintColor={'#8A817C'}/>
+                                                    <Text style={styles.txtCheckBox}>LOW</Text>
+                                                </View>
+                                            </TouchableOpacity>
+                                        </View>
+                                        <Text style={{color:'#a1a3a9', paddingBottom:hp('2%'), paddingTop:hp('5%')}}>VIDEO STATUS</Text>
+                                        <View style={{flexDirection: 'row', backgroundColor:'#595961',opacity:0.9, borderRadius:4, width:wp('90%'), height:hp('8%')}}>
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    this.setState({filterOptions:{
+                                                        ...this.state.filterOptions,
+                                                        showDone:!this.state.filterOptions.showDone
+                                                    }})
+                                                }
+                                                style={styles.filterBoxWB}>
+                                                <View style={{flexDirection: 'row'}}>
+                                                    <CheckBox disabled={true} value={this.state.filterOptions.showDone} lineWidth={1} tintColor={'#8A817C'}/>
+                                                    <Text style={styles.txtCheckBox}>DONE</Text>
+                                                </View>
+                                            
+                                            </TouchableOpacity>
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    this.setState({filterOptions:{
+                                                        ...this.state.filterOptions,
+                                                        showNotDone:!this.state.filterOptions.showNotDone
+                                                    }})
+                                                }
+                                                style={styles.filterB}>
+                                                <View style={{flexDirection: 'row'}}>
+                                                        <CheckBox disabled={true} value={this.state.filterOptions.showNotDone} lineWidth={1} tintColor={'#8A817C'}/>
+                                                        <Text style={styles.txtCheckBox}>IN PROGRESS</Text>
+                                                </View>
+                                            </TouchableOpacity>
+                                        </View>
+                                            <View style={styles.Button}>
+                                                <Button title="Applay Filter" style={styles.ApplayButton} onPress={this.applayFilter} color="#f3e5da" buttonStyle={{ backgroundColor: '#d36c64'}}/>
+                                            </View>
+                                    </View>
                                 </Modal>
-                               
-                            {/* <View style={{flexDirection: 'row'}}>
-                                <View style={{flexDirection: 'row'}}>
-                                    <Text style={styles.txtCheckBox}>H</Text>
-                                    <CheckBox  disabled={false} value={this.state.highCheck} onChange={()=>this.highCheck()} lineWidth={3} tintColor={'#8A817C'}/>
-                                </View>
-                                <View style={{flexDirection: 'row', left:wp('3%')}}>
-                                    <Text style={styles.txtCheckBox}>M</Text>
-                                    <CheckBox  disabled={false} value={this.state.mediumCheck} onChange={()=>this.mediumCheck()} lineWidth={3} tintColor={'#8A817C'}/>
-                                </View>
-                                
-                                <View style={{flexDirection: 'row', left:30}}>
-                                     <Text style={styles.txtCheckBox}>L</Text>
-                                    <CheckBox  disabled={false} value={this.state.lowCheack} onChange={()=>this.lowCheack()} lineWidth={3} tintColor={'#8A817C'}/>
-                                </View>
-                            </View> */}
 
                             <View style={styles.listContainer}>
                                 <FlatList
-                                    data={(this.props.MergeArray.sort((a, b) => a.priorityNumber.localeCompare(b.priorityNumber)))}
+                                    data={this.props.FilterArray}
                                     renderItem={this.renderItem}
                                 />
                             </View>
@@ -321,11 +396,55 @@ const styles = StyleSheet.create({
         width: wp('8%'),
         height: hp('6%'),
     },
+    modelContainer:{     
+        flex:1,   
+    },
+    filterBoxWithBorder:{
+        textAlign:'center',
+        justifyContent:'center',
+        width:wp('30%'),
+        borderRightWidth:2,
+        borderRightColor:'#3f4346',
+        paddingLeft:8
+    },
+    filterBox:{
+        textAlign:'center',
+        justifyContent:'center',
+        width:wp('30%'),
+        paddingLeft:8
+    },
+    filterBoxWB:{
+        textAlign:'center',
+        justifyContent:'center',
+        width:wp('45%'),
+        borderRightWidth:2,
+        borderRightColor:'#3f4346',
+        paddingLeft:8
+    },
+    filterB:{
+        textAlign:'center',
+        justifyContent:'center',
+        width:wp('45%'),
+        paddingLeft:8
+    },
     txtCheckBox: {
-        color: '#463F3A',
+        color: '#eaedef',
         top: hp('1%'),
-        paddingRight: wp('2%'),
-        fontSize: 14
+        left:7,
+        fontSize: 14,
+    },
+    Button:{
+        paddingTop:hp('8%'),
+        alignItems:'center'
+    },
+    ApplayButton:{
+        width:wp('40%'),
+        height:hp('8%'),
+        textAlign:'center',
+        justifyContent:'center',
+        backgroundColor:'#d36c64',
+        borderRadius:5,
+
     },
     listContainer: {
         width: wp('90%'), paddingTop: hp('0%'),
@@ -378,5 +497,5 @@ const styles = StyleSheet.create({
 
 export default connect(
     mapStateToProps,
-    { getVideoDetailes }
+    { getVideoDetailes, filterData }
 )(RehabPlan);

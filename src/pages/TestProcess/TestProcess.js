@@ -84,11 +84,13 @@ export class TestProcess extends Component {
                 overview = overview.substring(0, overview.length - 2);
             }
             await this.updateTest(token, testID, abnormality, overview);
+            
             await this.updatePatient(
                 token,
                 this.props.patienDetailes.id,
                 waitingStatus,
             );
+            
             this.setState({
                 visible: false,
                 inProcess: false,
@@ -219,7 +221,7 @@ export class TestProcess extends Component {
         });
     }
 
-    updateTest(token, testID, abnormality) {
+    updateTest(token, testID, abnormality,overview) {
         return new Promise(async (resolve, reject) => {
             try {
                 const body = { abnormality, overview };
@@ -236,6 +238,8 @@ export class TestProcess extends Component {
                 );
                 return resolve(response.data);
             } catch (ex) {
+                console.log(ex);
+                
                 return reject(new Error(ex.response.data.message));
             }
         });
