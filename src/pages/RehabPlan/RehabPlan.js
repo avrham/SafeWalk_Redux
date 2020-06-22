@@ -81,17 +81,29 @@ export class RehabPlan extends Component {
         this.toggleModal();
  }
 
+ navigateAndReswtParams = (item)=>{
+
+    this.setState({filterOptions:{
+        ...this.state.filterOptions,
+            highCheck: false,
+            mediumCheck: false,
+            lowCheack: false,
+            showDone:false,
+            showNotDone:false
+    }})
+    this.props.navigation.navigate('Exercise', {
+        id: item.id
+    })
+
+ }
+
     renderItem = ({ item }) => {
-        return item.timesLeft != 0 ? (
+        return (
             <TouchableOpacity
-                onPress={() =>
-                    this.props.navigation.navigate('Exercise', {
-                        id: item.id
-                    })
-                }
+                onPress={() => this.navigateAndReswtParams(item)}
                 style={styles.listItem}>
                 <View style={{ padding: hp('2%'), justifyContent: 'center', textAlign: 'center' }}>
-                    <Image source={IMAGE.ICOM_ALERT}
+                    <Image source={item.timesLeft != 0 ?IMAGE.ICOM_ALERT:IMAGE.ICONE_DONE}
                         style={styles.itemImg}
                         resizeMode="contain" />
                 </View>
@@ -107,32 +119,7 @@ export class RehabPlan extends Component {
                     </Text>
                 </View>
             </TouchableOpacity>
-        ) : (
-                <TouchableOpacity
-                    onPress={() =>
-                        this.props.navigation.navigate('Exercise', {
-                            id: item.id
-                        })
-                    }
-                    style={styles.listItemDesable}>
-                    <View style={{ padding: hp('2%'), justifyContent: 'center', textAlign: 'center' }}>
-                        <Image source={IMAGE.ICONE_DONE}
-                            style={styles.itemImg}
-                            resizeMode="contain" />
-                    </View>
-                    <View style={{ justifyContent: 'center', textAlign: 'center', left: wp('2%') }}>
-                        <Text style={styles.titleItem}>
-                            {item.name}
-                        </Text>
-                        <Text style={styles.titleItem}>
-                            {`Priority: ${item.priority}`}
-                        </Text>
-                        <Text style={styles.titleItem}>
-                            {`Times left: ${item.timesLeft}`}
-                        </Text>
-                    </View>
-                </TouchableOpacity>
-            );
+        )
     };
 
     renderMessage() {
@@ -298,7 +285,7 @@ export class RehabPlan extends Component {
 
                             <View style={styles.listContainer}>
                                 <FlatList
-                                    data={this.props.FilterArray}
+                                    data={(this.props.FilterArray.sort((a, b) => a.priorityNumber.localeCompare(b.priorityNumber)))}
                                     renderItem={this.renderItem}
                                 />
                             </View>

@@ -33,7 +33,8 @@ export default (state = initialState, action) => {
                 case MARK_VIDEO_EXECUTION:
                     return {
                         ...state,
-                        MergeArray: action.payload.MergeArray
+                        MergeArray: action.payload.MergeArray,
+                        FilterArray:action.payload.MergeArray
                     };
         default:
             return state;
