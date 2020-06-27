@@ -58,49 +58,16 @@ export const getVideoDetailes = (userToken, rehabPlan) => async dispatch => {
 
 export const filterData = (MergeArray, filterOption) => async dispatch => {
 
-  const {highCheck,mediumCheck,lowCheack,showDone,showNotDone} = filterOption
+  const {highCheck,mediumCheck,lowCheack,showDone,inProgress} = filterOption
 
 
   const newMergeArray = MergeArray.filter((item)=>{
 
-    if(highCheck&&mediumCheck&&lowCheack&&showDone&&showNotDone || !highCheck&&!mediumCheck&&!lowCheack&&!showDone&&!showNotDone ){
+    if(highCheck&&mediumCheck&&lowCheack&&showDone&&inProgress|| !highCheck&&!mediumCheck&&!lowCheack&&!showDone&&!inProgress){
       return item
     }
 
-    if(showDone){
-      if (highCheck && item.priorityNumber === 'a' && item.timesLeft===0){
-        return item;
-      }
-      if(mediumCheck && item.priorityNumber ==='b'&& item.timesLeft===0){
-        return item;
-      }
-      if(lowCheack && item.priorityNumber ==='c'&& item.timesLeft===0){
-        return item;
-      }
-      else{
-        if (item.timesLeft===0){
-          return item
-        }
-     }
-    }
-    else{
-      if(showNotDone ){
-        if (highCheck && item.priorityNumber === 'a'&& item.timesLeft!==0){
-         return item;
-       }
-       if(mediumCheck && item.priorityNumber ==='b'&& item.timesLeft!==0){
-         return item;
-       }
-       if(lowCheack && item.priorityNumber ==='c'&& item.timesLeft!==0){
-         return item;
-       }
-       else{
-          if (item.timesLeft!==0){
-            return item
-          }
-       }
-     }
-     else{
+    if(showDone && inProgress&& !(highCheck||mediumCheck||lowCheack)){
       if (highCheck && item.priorityNumber === 'a'){
         return item;
       }
@@ -110,8 +77,72 @@ export const filterData = (MergeArray, filterOption) => async dispatch => {
       if(lowCheack && item.priorityNumber ==='c'){
         return item;
       }
-     }
+      else{
+        return item;
+      }
     }
+    if(showDone && inProgress&& (highCheck||mediumCheck||lowCheack)){
+      if (highCheck && item.priorityNumber === 'a'){
+        return item;
+      }
+      if(mediumCheck && item.priorityNumber ==='b'){
+        return item;
+      }
+      if(lowCheack && item.priorityNumber ==='c'){
+        return item;
+      }
+    }
+ 
+
+    if(showDone && (highCheck||mediumCheck||lowCheack) ){
+      if (highCheck && item.priorityNumber === 'a' && item.timesLeft===0){
+        return item;
+      }
+      if(mediumCheck && item.priorityNumber ==='b'&& item.timesLeft===0){
+        return item;
+      }
+      if(lowCheack && item.priorityNumber ==='c'&& item.timesLeft===0){
+        return item;
+      }
+    }
+    else{
+      if(showDone&& !(highCheck||mediumCheck||lowCheack)){
+        if (item.timesLeft===0){
+          return item
+        }
+      }
+      else{
+        if(inProgress && (highCheck||mediumCheck||lowCheack)){
+          if (highCheck && item.priorityNumber === 'a' && item.timesLeft!==0){
+          return item;
+        }
+        if(mediumCheck && item.priorityNumber ==='b'&& item.timesLeft!==0){
+          return item;
+        }
+        if(lowCheack && item.priorityNumber ==='c'&& item.timesLeft!==0){
+          return item;
+        }
+      }
+      else{
+        if(inProgress&& !(highCheck||mediumCheck||lowCheack)){
+          if (item.timesLeft!==0){
+            return item
+          }
+        }
+        else{
+          if (highCheck && item.priorityNumber === 'a'){
+            return item;
+          }
+          if(mediumCheck && item.priorityNumber ==='b'){
+            return item;
+          }
+          if(lowCheack && item.priorityNumber ==='c'){
+            return item;
+          }
+        }
+      }
+    }
+  }
   
     
   })

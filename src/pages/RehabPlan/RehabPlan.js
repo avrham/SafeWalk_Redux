@@ -51,7 +51,7 @@ export class RehabPlan extends Component {
                 mediumCheck: false,
                 lowCheack: false,
                 showDone:false,
-                showNotDone:false
+                inProgress:false
             }
 
         }
@@ -89,7 +89,7 @@ export class RehabPlan extends Component {
             mediumCheck: false,
             lowCheack: false,
             showDone:false,
-            showNotDone:false
+            inProgress:false
     }})
     this.props.navigation.navigate('Exercise', {
         id: item.id
@@ -267,12 +267,12 @@ export class RehabPlan extends Component {
                                                 onPress={() =>
                                                     this.setState({filterOptions:{
                                                         ...this.state.filterOptions,
-                                                        showNotDone:!this.state.filterOptions.showNotDone
+                                                        inProgress:!this.state.filterOptions.inProgress
                                                     }})
                                                 }
                                                 style={styles.filterB}>
                                                 <View style={{flexDirection: 'row'}}>
-                                                        <CheckBox disabled={true} value={this.state.filterOptions.showNotDone} lineWidth={1} tintColor={'#8A817C'}/>
+                                                        <CheckBox disabled={true} value={this.state.filterOptions.inProgress} lineWidth={1} tintColor={'#8A817C'}/>
                                                         <Text style={styles.txtCheckBox}>IN PROGRESS</Text>
                                                 </View>
                                             </TouchableOpacity>

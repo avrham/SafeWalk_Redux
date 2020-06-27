@@ -21,10 +21,10 @@ export const authenticate = (user_name, password) => async dispatch => {
     method: 'post',
     url: `${config.SERVER_URL}/auth/login`,
     data: {
-      mail: m2,
-      password: p,
-      // mail: user_name,
-      // password: password,
+      // mail: m2,
+      // password: p,
+      mail: user_name,
+      password: password,
     }
   };
   try {
