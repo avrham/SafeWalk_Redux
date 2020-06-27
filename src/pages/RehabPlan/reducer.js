@@ -1,8 +1,9 @@
-import { GET_VIDEO_DETAILES, ERROR, RESET_ERROR } from './action_types';
+import { GET_VIDEO_DETAILES, ERROR, RESET_ERROR, FILTER_DATA } from './action_types';
 import {MARK_VIDEO_EXECUTION } from '../Exercise/action_types'
 
 const initialState = {
     MergeArray: [],
+    FilterArray:[],
     errMessage:''
 };
 
@@ -11,8 +12,14 @@ export default (state = initialState, action) => {
         case GET_VIDEO_DETAILES:
             return {
                 ...state,
-                MergeArray: action.payload
+                MergeArray: action.payload,
+                FilterArray:action.payload
             };
+            case FILTER_DATA:
+                return {
+                    ...state,
+                    FilterArray: action.payload
+                };
             case ERROR:
                 return {
                     ...state,
@@ -26,7 +33,8 @@ export default (state = initialState, action) => {
                 case MARK_VIDEO_EXECUTION:
                     return {
                         ...state,
-                        MergeArray: action.payload.MergeArray
+                        MergeArray: action.payload.MergeArray,
+                        FilterArray:action.payload.MergeArray
                     };
         default:
             return state;

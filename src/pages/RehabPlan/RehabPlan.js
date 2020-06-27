@@ -7,14 +7,15 @@ import {
     Image,
     StyleSheet,
     TouchableOpacity,
-    Alert,
+    Alert
 } from 'react-native';
+import { Button } from 'react-native-elements';
 import CustomHeader from '../../components/CustomHeader'
 import { IMAGE } from '../../constans/Image';
 import AnimatedLoader from 'react-native-animated-loader';
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
-import { getVideoDetailes } from './actions';
+import { getVideoDetailes, filterData } from './actions';
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
@@ -22,11 +23,12 @@ import {
 import Moment from 'moment';
 import ProgressCircle from 'react-native-progress-circle';
 import CheckBox from '@react-native-community/checkbox';
-
+import Modal from 'react-native-modal';
 
 
 const mapStateToProps = state => ({
     MergeArray: state.rehabPlan.MergeArray,
+    FilterArray:state.rehabPlan.FilterArray,
     userToken: state.login.userToken,
     patienDetailes: state.login.patienDetailes,
     rehabPlan: state.login.rehabPlan,
@@ -43,9 +45,15 @@ export class RehabPlan extends Component {
             videoIds: '',
             AllVideoDetails: [],
             mergeArray: [],
-            highCheck:false,
-            mediumCheck:false,
-            lowCheack:false
+            isModalVisible: false,
+            filterOptions: {
+                highCheck: false,
+                mediumCheck: false,
+                lowCheack: false,
+                showDone:false,
+                inProgress:false
+            }
+
         }
     }
 
@@ -58,25 +66,48 @@ export class RehabPlan extends Component {
             }
             catch (err) {
                 console.log(err.message);
-                Alert.alert('Alert',err.message, [{text:'OK' ,onPress:()=> this.setState({ visible: false })}])
+                Alert.alert('Alert', err.message, [{ text: 'OK', onPress: () => this.setState({ visible: false }) }])
             }
         }
     }
+
+
+    toggleModal = () => {
+        this.setState({isModalVisible: !this.state.isModalVisible});
+      };
+    
+    applayFilter =  () =>{
+        this.props.filterData(this.props.MergeArray, this.state.filterOptions);
+        this.toggleModal();
+ }
+
+ navigateAndReswtParams = (item)=>{
+
+    this.setState({filterOptions:{
+        ...this.state.filterOptions,
+            highCheck: false,
+            mediumCheck: false,
+            lowCheack: false,
+            showDone:false,
+            inProgress:false
+    }})
+    this.props.navigation.navigate('Exercise', {
+        id: item.id
+    })
+
+ }
+
     renderItem = ({ item }) => {
-        return item.timesLeft != 0 ? (
+        return (
             <TouchableOpacity
-                onPress={() =>
-                    this.props.navigation.navigate('Exercise', {
-                        id: item.id
-                    })
-                }
+                onPress={() => this.navigateAndReswtParams(item)}
                 style={styles.listItem}>
-                    <View style={{padding:hp('2%'),justifyContent:'center', textAlign:'center'}}>
-                    <Image source={IMAGE.ICOM_ALERT}
+                <View style={{ padding: hp('2%'), justifyContent: 'center', textAlign: 'center' }}>
+                    <Image source={item.timesLeft != 0 ?IMAGE.ICOM_ALERT:IMAGE.ICONE_DONE}
                         style={styles.itemImg}
                         resizeMode="contain" />
                 </View>
-                <View style={{justifyContent:'center', textAlign:'center', left:wp('2%')}}>
+                <View style={{ justifyContent: 'center', textAlign: 'center', left: wp('2%') }}>
                     <Text style={styles.titleItem}>
                         {item.name}
                     </Text>
@@ -88,39 +119,14 @@ export class RehabPlan extends Component {
                     </Text>
                 </View>
             </TouchableOpacity>
-        ) : (
-            <TouchableOpacity
-                onPress={() =>
-                    this.props.navigation.navigate('Exercise', {
-                        id: item.id
-                    })
-                }
-                style={styles.listItemDesable}>
-                <View style={{padding:hp('2%'),justifyContent:'center', textAlign:'center'}}>
-                <Image source={IMAGE.ICONE_DONE}
-                    style={styles.itemImg}
-                    resizeMode="contain" />
-                </View>
-            <View style={{justifyContent:'center', textAlign:'center', left:wp('2%')}}>
-                <Text style={styles.titleItem}>
-                    {item.name}
-                </Text>
-                <Text style={styles.titleItem}>
-                    {`Priority: ${item.priority}`}
-                </Text>
-                <Text style={styles.titleItem}>
-                    {`Times left: ${item.timesLeft}`}
-                </Text>
-            </View>
-        </TouchableOpacity>
-        );
+        )
     };
 
     renderMessage() {
         return (
             <LinearGradient colors={['#8A817C', '#F4F3EE']} style={styles.gradient}>
                 <SafeAreaView style={styles.app}>
-                <CustomHeader headerNormal={true} navigation={this.props.navigation} />
+                    <CustomHeader headerNormal={true} navigation={this.props.navigation} />
                     <View style={styles.background}>
                         <SafeAreaView>
                             <View style={styles.viewAlert}>
@@ -146,7 +152,7 @@ export class RehabPlan extends Component {
     }
 
     renderRehabPlan() {
-        const { visible } = this.state
+        const { visible } = this.state;
         return (
             <LinearGradient colors={['#8A817C', '#F4F3EE']} style={styles.gradient}>
                 <SafeAreaView style={styles.app}>
@@ -164,16 +170,16 @@ export class RehabPlan extends Component {
                                 {this.props.rehabPlan.name}
                             </Text>
                         </View>
-                        <View style={{ flex: 1, width:wp('90%'), paddingBottom:hp('2%'), paddingTop:hp('2%') }}>
-                            <View style={{flexDirection: 'row', paddingBottom:hp('2%')}}>
+                        <View style={{ flex: 1, width: wp('90%'), paddingBottom: hp('2%'), paddingTop: hp('2%') }}>
+                            <View style={{ flexDirection: 'row', paddingBottom: hp('2%') }}>
                                 <Text style={styles.staticSentence}>
                                     {'To be completed until: '}
                                     <Text style={styles.descriptionPlan}>
-                                    {Moment(this.props.rehabPlan.executionTime).format('DD/MM/YYYY')}
+                                        {Moment(this.props.rehabPlan.executionTime).format('DD/MM/YYYY')}
                                     </Text>
                                 </Text>
                             </View>
-                            <View style={{flexDirection: 'row', paddingBottom:hp('2%')}}>
+                            <View style={{ flexDirection: 'row', paddingBottom: hp('0%') }}>
                                 <Text style={styles.staticSentence}>
                                     {'Instructions: '}
                                     <Text style={styles.descriptionPlan}>
@@ -181,40 +187,120 @@ export class RehabPlan extends Component {
                                     </Text>
                                 </Text>
                             </View>
-                            <View style={{flexDirection: 'row'}}>
-                                <View style={{flexDirection: 'row'}}>
-                                    <Text style={styles.txtCheckBox}>H</Text>
-                                    <CheckBox  disabled={false} value={this.state.highCheck} onChange={()=>this.highCheck()} lineWidth={3} tintColor={'#8A817C'}/>
-                                </View>
-                                <View style={{flexDirection: 'row', left:wp('3%')}}>
-                                    <Text style={styles.txtCheckBox}>M</Text>
-                                    <CheckBox  disabled={false} value={this.state.mediumCheck} onChange={()=>this.mediumCheck()} lineWidth={3} tintColor={'#8A817C'}/>
-                                </View>
-                                
-                                <View style={{flexDirection: 'row', left:30}}>
-                                     <Text style={styles.txtCheckBox}>L</Text>
-                                    <CheckBox  disabled={false} value={this.state.lowCheack} onChange={()=>this.lowCheack()} lineWidth={3} tintColor={'#8A817C'}/>
-                                </View>
-                            </View>
-                          
+                            <TouchableOpacity onPress={this.toggleModal} style={{flexDirection:'row-reverse'}}>
+                                 <Image
+                                    source={IMAGE.FILTER}
+                                    style={styles.filterImg}
+                                    resizeMode="contain"
+                                />
+                            </TouchableOpacity >
+                                <Modal isVisible={this.state.isModalVisible} backdropColor={'#373a42'} backdropOpacity={0.85}>
+                                    <View style={styles.modelContainer}>
+                                        <TouchableOpacity style={{ justifyContent: 'center', paddingTop:hp('3%') }} onPress={this.toggleModal}>
+                                            <Image source={IMAGE.EXIT}
+                                                style={styles.itemImg}
+                                                resizeMode="contain" />
+                                        </TouchableOpacity>
+                                    <Text style={{color:'#e2e0e5', fontSize:18, textAlign:'center'}}>
+                                        Filters
+                                        </Text> 
+                                        <Text style={{color:'#a1a3a9', paddingBottom:hp('2%'), paddingTop:hp('5%')}}>PRIORITY</Text>
+                                        <View style={{flexDirection: 'row', backgroundColor:'#595961',opacity:0.9, borderRadius:4, width:wp('90%'), height:hp('8%')}}>
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    this.setState({filterOptions:{
+                                                        ...this.state.filterOptions,
+                                                        highCheck:!this.state.filterOptions.highCheck
+                                                    }})
+                                                }
+                                                style={styles.filterBoxWithBorder}>
+                                                <View style={{flexDirection: 'row'}}>
+                                                    <CheckBox disabled={true} value={this.state.filterOptions.highCheck} lineWidth={1} tintColor={'#8A817C'}/>
+                                                    <Text style={styles.txtCheckBox}>HIGH</Text>
+                                                </View>
+                                            
+                                            </TouchableOpacity>
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    this.setState({filterOptions:{
+                                                        ...this.state.filterOptions,
+                                                        mediumCheck:!this.state.filterOptions.mediumCheck
+                                                    }})
+                                                }
+                                                style={styles.filterBoxWithBorder}>
+                                             <View style={{flexDirection: 'row'}}>
+                                                    <CheckBox disabled={true} value={this.state.filterOptions.mediumCheck} lineWidth={1} tintColor={'#8A817C'}/>
+                                                    <Text style={styles.txtCheckBox}>MEDIUM</Text>
+                                                </View>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    this.setState({filterOptions:{
+                                                        ...this.state.filterOptions,
+                                                        lowCheack:!this.state.filterOptions.lowCheack
+                                                    }})
+                                                }
+                                                style={styles.filterBox}>
+                                             <View style={{flexDirection: 'row'}}>
+                                                    <CheckBox disabled={true} value={this.state.filterOptions.lowCheack} lineWidth={1} tintColor={'#8A817C'}/>
+                                                    <Text style={styles.txtCheckBox}>LOW</Text>
+                                                </View>
+                                            </TouchableOpacity>
+                                        </View>
+                                        <Text style={{color:'#a1a3a9', paddingBottom:hp('2%'), paddingTop:hp('5%')}}>VIDEO STATUS</Text>
+                                        <View style={{flexDirection: 'row', backgroundColor:'#595961',opacity:0.9, borderRadius:4, width:wp('90%'), height:hp('8%')}}>
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    this.setState({filterOptions:{
+                                                        ...this.state.filterOptions,
+                                                        showDone:!this.state.filterOptions.showDone
+                                                    }})
+                                                }
+                                                style={styles.filterBoxWB}>
+                                                <View style={{flexDirection: 'row'}}>
+                                                    <CheckBox disabled={true} value={this.state.filterOptions.showDone} lineWidth={1} tintColor={'#8A817C'}/>
+                                                    <Text style={styles.txtCheckBox}>DONE</Text>
+                                                </View>
+                                            
+                                            </TouchableOpacity>
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    this.setState({filterOptions:{
+                                                        ...this.state.filterOptions,
+                                                        inProgress:!this.state.filterOptions.inProgress
+                                                    }})
+                                                }
+                                                style={styles.filterB}>
+                                                <View style={{flexDirection: 'row'}}>
+                                                        <CheckBox disabled={true} value={this.state.filterOptions.inProgress} lineWidth={1} tintColor={'#8A817C'}/>
+                                                        <Text style={styles.txtCheckBox}>IN PROGRESS</Text>
+                                                </View>
+                                            </TouchableOpacity>
+                                        </View>
+                                            <View style={styles.Button}>
+                                                <Button title="Applay Filter" style={styles.ApplayButton} onPress={this.applayFilter} color="#f3e5da" buttonStyle={{ backgroundColor: '#d36c64'}}/>
+                                            </View>
+                                    </View>
+                                </Modal>
+
                             <View style={styles.listContainer}>
                                 <FlatList
-                                    data={(this.props.MergeArray.sort((a, b) => a.priorityNumber.localeCompare(b.priorityNumber)))}
+                                    data={(this.props.FilterArray.sort((a, b) => a.priorityNumber.localeCompare(b.priorityNumber)))}
                                     renderItem={this.renderItem}
                                 />
                             </View>
-                            <View style={{justifyContent: 'flex-end'}}>
+                            <View style={{ justifyContent: 'flex-end' }}>
                                 <View
                                     style={styles.ProgressBarAnimated}>
                                     <Text style={styles.label}>You've completed</Text>
                                     <ProgressCircle
-                                    percent={this.props.rehabProgress}
-                                    radius={27}
-                                    borderWidth={4}
-                                    color="#3399FF"
-                                    bgColor="#edece7"
-                                     >
-                                    <Text style={{ fontSize: 14 }}>{this.props.rehabProgress}%</Text>
+                                        percent={this.props.rehabProgress}
+                                        radius={27}
+                                        borderWidth={4}
+                                        color="#3399FF"
+                                        bgColor="#edece7"
+                                    >
+                                        <Text style={{ fontSize: 14 }}>{this.props.rehabProgress}%</Text>
                                     </ProgressCircle>
                                     <Text style={styles.label}>of your rehab program</Text>
                                 </View>
@@ -228,7 +314,7 @@ export class RehabPlan extends Component {
     }
 
     render() {
-        if (this.props.rehabExsist && !(this.props.MergeArray===null)) {
+        if (this.props.rehabExsist && !(this.props.MergeArray === null)) {
             return this.renderRehabPlan();
         }
         else {
@@ -269,11 +355,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: hp('2%'),
     },
-    descriptionTitleContainer:{
-        borderBottomWidth:1,
-        borderBottomColor:'#463F3A',
-        padding:10,
-        width:'100%'
+    descriptionTitleContainer: {
+        borderBottomWidth: 1,
+        borderBottomColor: '#463F3A',
+        padding: 10,
+        width: '100%'
     },
     descriptionTitle: {
         color: '#463F3A',
@@ -282,55 +368,103 @@ const styles = StyleSheet.create({
         top: 0,
         textAlign: 'center',
     },
-    staticSentence:{
-        color:'#463F3A',
-        fontSize:wp('4.4%'),
-        fontWeight:'bold'
+    staticSentence: {
+        color: '#463F3A',
+        fontSize: wp('4.4%'),
+        fontWeight: 'bold'
     },
     descriptionPlan: {
-        color:'#463F3A',
-        opacity:0.8,
-        fontSize:wp('4%'),        
+        color: '#463F3A',
+        opacity: 0.8,
+        fontSize: wp('4%'),
         //fontFamily: 'Lato-Bold',
     },
-    txtCheckBox:{
-        color: '#463F3A',
-        top:hp('1%'), 
-        paddingRight:wp('2%'), 
-        fontSize:14
+    filterImg:{
+        width: wp('8%'),
+        height: hp('6%'),
     },
-    listContainer:{
-        width: wp('90%'), paddingTop:hp('1%'),
-        flex:1
+    modelContainer:{     
+        flex:1,   
+    },
+    filterBoxWithBorder:{
+        textAlign:'center',
+        justifyContent:'center',
+        width:wp('30%'),
+        borderRightWidth:2,
+        borderRightColor:'#3f4346',
+        paddingLeft:8
+    },
+    filterBox:{
+        textAlign:'center',
+        justifyContent:'center',
+        width:wp('30%'),
+        paddingLeft:8
+    },
+    filterBoxWB:{
+        textAlign:'center',
+        justifyContent:'center',
+        width:wp('45%'),
+        borderRightWidth:2,
+        borderRightColor:'#3f4346',
+        paddingLeft:8
+    },
+    filterB:{
+        textAlign:'center',
+        justifyContent:'center',
+        width:wp('45%'),
+        paddingLeft:8
+    },
+    txtCheckBox: {
+        color: '#eaedef',
+        top: hp('1%'),
+        left:7,
+        fontSize: 14,
+    },
+    Button:{
+        paddingTop:hp('8%'),
+        alignItems:'center'
+    },
+    ApplayButton:{
+        width:wp('40%'),
+        height:hp('8%'),
+        textAlign:'center',
+        justifyContent:'center',
+        backgroundColor:'#d36c64',
+        borderRadius:5,
+
+    },
+    listContainer: {
+        width: wp('90%'), paddingTop: hp('0%'),
+        flex: 1
     },
     listItem: {
         flexDirection: 'row',
-        height:hp('10%'),
-        backgroundColor:'#8A817C',
-        marginBottom:10,
-        borderRadius:5,
+        height: hp('10%'),
+        backgroundColor: '#8A817C',
+        marginBottom: 10,
+        borderRadius: 5,
     },
-    listItemDesable:{
+    listItemDesable: {
         flexDirection: 'row',
-        height:hp('10%'),
-        backgroundColor:'#8A817C',
-        marginBottom:10,
-        borderRadius:5,
+        height: hp('10%'),
+        backgroundColor: '#8A817C',
+        marginBottom: 10,
+        borderRadius: 5,
     },
     titleItem: {
         color: '#F4F3EE',
-        padding:hp('0.35%'),
-        fontSize:wp('3.8%')
+        padding: hp('0.35%'),
+        fontSize: wp('3.8%')
     },
     itemImg: {
         width: wp('8%'),
         height: hp('10%'),
     },
     ProgressBarAnimated: {
-        width:'100%',
-        top:hp('2%'),
+        width: '100%',
+        top: hp('2%'),
         flexDirection: 'row',
-        textAlign:'center',
+        textAlign: 'center',
         justifyContent: 'center',
 
     },
@@ -344,11 +478,11 @@ const styles = StyleSheet.create({
         //fontFamily: 'Lato-Regular',
         borderColor: '#8A817C',
         padding: wp('2%'),
-        top:hp('0.6%')
+        top: hp('0.6%')
     },
 });
 
 export default connect(
     mapStateToProps,
-    { getVideoDetailes }
+    { getVideoDetailes, filterData }
 )(RehabPlan);

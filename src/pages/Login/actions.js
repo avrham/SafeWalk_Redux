@@ -14,7 +14,7 @@ export const handleError = errorMessage => ({ type: ERROR, payload: errorMessage
 
 
 export const authenticate = (user_name, password) => async dispatch => {
-  const m2= 'shoshana@gmail.com'
+  const m2= 'aneeman2010@gmail.com'
   const p = '123456'
 
   let options = {
