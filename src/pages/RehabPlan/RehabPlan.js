@@ -152,7 +152,7 @@ export class RehabPlan extends Component {
     }
 
     renderRehabPlan() {
-        const { visible } = this.state;
+        const { visible,filterOptions } = this.state;
         return (
             <LinearGradient colors={['#8A817C', '#F4F3EE']} style={styles.gradient}>
                 <SafeAreaView style={styles.app}>
@@ -189,7 +189,7 @@ export class RehabPlan extends Component {
                             </View>
                             <TouchableOpacity onPress={this.toggleModal} style={{flexDirection:'row-reverse'}}>
                                  <Image
-                                    source={IMAGE.FILTER}
+                                    source={filterOptions.highCheck||filterOptions.mediumCheck||filterOptions.lowCheack||filterOptions.inProgress?IMAGE.FILTER_PRESS:IMAGE.FILTER}
                                     style={styles.filterImg}
                                     resizeMode="contain"
                                 />
@@ -209,40 +209,39 @@ export class RehabPlan extends Component {
                                             <TouchableOpacity
                                                 onPress={() =>
                                                     this.setState({filterOptions:{
-                                                        ...this.state.filterOptions,
-                                                        highCheck:!this.state.filterOptions.highCheck
+                                                        ...filterOptions,
+                                                        highCheck:!filterOptions.highCheck
                                                     }})
                                                 }
                                                 style={styles.filterBoxWithBorder}>
                                                 <View style={{flexDirection: 'row'}}>
-                                                    <CheckBox disabled={true} value={this.state.filterOptions.highCheck} lineWidth={1} tintColor={'#8A817C'}/>
+                                                    <CheckBox disabled={true} value={filterOptions.highCheck} lineWidth={1} tintColor={'#8A817C'}/>
                                                     <Text style={styles.txtCheckBox}>HIGH</Text>
                                                 </View>
-                                            
                                             </TouchableOpacity>
                                             <TouchableOpacity
                                                 onPress={() =>
                                                     this.setState({filterOptions:{
-                                                        ...this.state.filterOptions,
-                                                        mediumCheck:!this.state.filterOptions.mediumCheck
+                                                        ...filterOptions,
+                                                        mediumCheck:!filterOptions.mediumCheck
                                                     }})
                                                 }
                                                 style={styles.filterBoxWithBorder}>
                                              <View style={{flexDirection: 'row'}}>
-                                                    <CheckBox disabled={true} value={this.state.filterOptions.mediumCheck} lineWidth={1} tintColor={'#8A817C'}/>
+                                                    <CheckBox disabled={true} value={filterOptions.mediumCheck} lineWidth={1} tintColor={'#8A817C'}/>
                                                     <Text style={styles.txtCheckBox}>MEDIUM</Text>
                                                 </View>
                                             </TouchableOpacity>
                                             <TouchableOpacity
                                                 onPress={() =>
                                                     this.setState({filterOptions:{
-                                                        ...this.state.filterOptions,
-                                                        lowCheack:!this.state.filterOptions.lowCheack
+                                                        ...filterOptions,
+                                                        lowCheack:!filterOptions.lowCheack
                                                     }})
                                                 }
                                                 style={styles.filterBox}>
                                              <View style={{flexDirection: 'row'}}>
-                                                    <CheckBox disabled={true} value={this.state.filterOptions.lowCheack} lineWidth={1} tintColor={'#8A817C'}/>
+                                                    <CheckBox disabled={true} value={filterOptions.lowCheack} lineWidth={1} tintColor={'#8A817C'}/>
                                                     <Text style={styles.txtCheckBox}>LOW</Text>
                                                 </View>
                                             </TouchableOpacity>
@@ -252,13 +251,13 @@ export class RehabPlan extends Component {
                                             <TouchableOpacity
                                                 onPress={() =>
                                                     this.setState({filterOptions:{
-                                                        ...this.state.filterOptions,
-                                                        showDone:!this.state.filterOptions.showDone
+                                                        ...filterOptions,
+                                                        showDone:!filterOptions.showDone
                                                     }})
                                                 }
                                                 style={styles.filterBoxWB}>
                                                 <View style={{flexDirection: 'row'}}>
-                                                    <CheckBox disabled={true} value={this.state.filterOptions.showDone} lineWidth={1} tintColor={'#8A817C'}/>
+                                                    <CheckBox disabled={true} value={filterOptions.showDone} lineWidth={1} tintColor={'#8A817C'}/>
                                                     <Text style={styles.txtCheckBox}>DONE</Text>
                                                 </View>
                                             
@@ -266,13 +265,13 @@ export class RehabPlan extends Component {
                                             <TouchableOpacity
                                                 onPress={() =>
                                                     this.setState({filterOptions:{
-                                                        ...this.state.filterOptions,
-                                                        inProgress:!this.state.filterOptions.inProgress
+                                                        ...filterOptions,
+                                                        inProgress:!filterOptions.inProgress
                                                     }})
                                                 }
                                                 style={styles.filterB}>
                                                 <View style={{flexDirection: 'row'}}>
-                                                        <CheckBox disabled={true} value={this.state.filterOptions.inProgress} lineWidth={1} tintColor={'#8A817C'}/>
+                                                        <CheckBox disabled={true} value={filterOptions.inProgress} lineWidth={1} tintColor={'#8A817C'}/>
                                                         <Text style={styles.txtCheckBox}>IN PROGRESS</Text>
                                                 </View>
                                             </TouchableOpacity>
