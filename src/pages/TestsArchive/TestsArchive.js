@@ -106,10 +106,10 @@ export class TestsArchive extends Component {
     }
     renderTests() {
         const { visible } = this.state
-        var sorted_meetings = this.props.getAllTests.sort((a,b) => {
-            return new Date(a.date).getTime() - 
-                new Date(b.date).getTime()
-        }).reverse();
+        // var sorted_meetings = this.props.getAllTests.sort((a,b) => {
+        //     return new Date(b.date).getTime() - 
+        //         new Date(a.date).getTime()
+        // })
         return (
             <LinearGradient colors={['#8A817C', '#F4F3EE']} style={styles.gradient}>
                 <SafeAreaView style={styles.app}>
@@ -129,7 +129,9 @@ export class TestsArchive extends Component {
                         </View>
                         <View style={styles.listContainer}>
                             <FlatList
-                                data={sorted_meetings}
+                                data={this.props.getAllTests.sort((a,b) => {
+                                    return new Date(b.date).getTime() - new Date(a.date).getTime()
+                                })}
                                 renderItem={this.renderItem}
                             />
                         </View>
