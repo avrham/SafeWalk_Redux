@@ -384,6 +384,7 @@ const styles = StyleSheet.create({
     },
     modelContainer:{     
         flex:1,   
+        top:hp('3%')
     },
     filterBoxWithBorder:{
         textAlign:'center',
@@ -465,7 +466,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         textAlign: 'center',
         justifyContent: 'center',
-
     },
     label: {
         color: 'black',
