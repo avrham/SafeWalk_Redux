@@ -59,14 +59,14 @@ export class TestProcess extends Component {
                 });
             }, 5000);
             promise1 = this.scanGaitAndAnalyze(IPs.sensor1, 'sensor1', token, testID);
-            //promise2 = this.scanGaitAndAnalyze(IPs.sensor2, 'sensor2', token, testID);
+            promise2 = this.scanGaitAndAnalyze(IPs.sensor2, 'sensor2', token, testID);
             // promise3 = this.scanGaitAndAnalyze(IPs.sensor3, 'sensor3', token, testID);
             // promise4 = this.scanGaitAndAnalyze(IPs.sensor4, 'sensor4', token, testID);
             // promise5 = this.scanGaitAndAnalyze(IPs.sensor5, 'sensor5', token, testID);
             // promise6 = this.scanGaitAndAnalyze(IPs.sensor6, 'sensor6', token, testID);
             // promise7 = this.scanGaitAndAnalyze(IPs.sensor7, 'sensor7', token, testID);
             // const conclusions = await Promise.all([promise1, promise2, promise3, promise4, promise5, promise6, promise7]);
-            const conclusions = await Promise.all([promise1]);
+            const conclusions = await Promise.all([promise1,promise2]);
             let abnormality = false,
                 waitingStatus = false;
             for (let conclusion of conclusions)

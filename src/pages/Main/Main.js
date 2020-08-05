@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
         color: '#F4F3EE',
     },
     ProgressBarAnimated: {
-        marginTop: hp('39%'),
+        marginTop: hp('36%'),
         borderColor: 'black',
         borderWidth: 2,
         borderColor: '#8A817C',

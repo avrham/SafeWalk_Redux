@@ -124,7 +124,7 @@ export class Exercise extends Component {
                                         color="#3399FF"
                                         bgColor="#edece7"
                                         >
-                                        <Text style={{ fontSize: 14 }}>{this.props.rehabProgress}%</Text>
+                                        <Text style={{ fontSize: 14}}>{this.props.rehabProgress}%</Text>
                                         </ProgressCircle>
                                         <Text style={styles.label}>of your rehab program</Text>
                                     </View>
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     },
     ButtonContainer: {
         alignItems: 'center',
-        top: hp('20%')
+        top: hp('18%')
     },
     Button: {
         width: 200,
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
 
     ProgressBarAnimated: {
         width: '100%',
-        top: hp('5%'),
+        top: hp('4%'),
         flexDirection: 'row',
         textAlign: 'center',
         justifyContent: 'center',

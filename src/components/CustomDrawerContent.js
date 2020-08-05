@@ -39,7 +39,7 @@ function CustomDrawerContent({progress,...props}){
             </View>
             <DrawerContentScrollView {...props}>
                 <Animated.View style={{transform: [{translateX}]}}>
-                    <DrawerItemList activeTintColor='#463F3A' {...props}>
+                    <DrawerItemList activeTintColor='#3399ff' activeBackgroundColor='rgba(0, 0, 0, .04)' {...props}>
                     </DrawerItemList>
                     <TouchableOpacity
                     style={{marginTop: hp('36%'), marginLeft: wp('27%')}}
