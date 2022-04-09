@@ -23,7 +23,7 @@
     "array-merge-by-key": "^1.0.1",
     "axios": "^0.19.2",
     "lottie-react-native": "^3.4.0",
-    "moment": "^2.26.0",
+    "moment": "^2.29.2",
     "native-base": "^2.13.12",
     "react": "16.11.0",
     "react-native": "0.62.2",
